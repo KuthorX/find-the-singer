@@ -1,0 +1,100 @@
+[gd_scene load_steps=13 format=3 uid="uid://3y1yfirmoqb5"]
+
+[ext_resource type="Script" uid="uid://bgyvlelyydjdx" path="res://scripts/Player.gd" id="1_2b24p"]
+[ext_resource type="Script" uid="uid://cai30atc0sqnm" path="res://scripts/PencilPlat.gd" id="2_alqpt"]
+[ext_resource type="Script" uid="uid://dpr3vxa83tyu0" path="res://scripts/PenPlat.gd" id="3_r6pda"]
+[ext_resource type="Script" uid="uid://bgt8mwtg0gf27" path="res://scripts/QuillPlat.gd" id="4_c87ny"]
+[ext_resource type="Script" uid="uid://dot6qd556r05t" path="res://scripts/EraserPlat.gd" id="5_m0p7j"]
+[ext_resource type="Script" uid="uid://gcl107yy7edn" path="res://scripts/LetterBonus.gd" id="6_yljlq"]
+[ext_resource type="Script" uid="uid://da82rbkomc52u" path="res://scripts/GameState.gd" id="7_k5p4p"]
+[ext_resource type="Script" uid="uid://cr77jdmq78p1b" path="res://scripts/GUI_LetterBonus.gd" id="8_brn83"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_tghxr"]
+radius = 43.0
+height = 162.0
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_37g4p"]
+normal = Vector2(100, 100)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yg2w3"]
+size = Vector2(2202.3352, 87.25)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wl7ka"]
+size = Vector2(300, 200)
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+offset = Vector2(960, 540)
+
+[node name="Player" type="CharacterBody2D" parent="."]
+script = ExtResource("1_2b24p")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+position = Vector2(140, 765)
+shape = SubResource("CapsuleShape2D_tghxr")
+
+[node name="WorldBoundary" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldBoundary"]
+position = Vector2(311.99997, 1175)
+rotation = 0.7853982
+shape = SubResource("WorldBoundaryShape2D_37g4p")
+
+[node name="Groud" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Groud"]
+position = Vector2(1011.15393, 1028.4939)
+rotation = -0.08072871
+scale = Vector2(0.99999994, 0.99999994)
+shape = SubResource("RectangleShape2D_yg2w3")
+
+[node name="PencilPlat" type="RigidBody2D" parent="."]
+position = Vector2(358, 276)
+script = ExtResource("2_alqpt")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PencilPlat"]
+shape = SubResource("RectangleShape2D_wl7ka")
+
+[node name="PenPlat" type="RigidBody2D" parent="."]
+position = Vector2(908, 354)
+script = ExtResource("3_r6pda")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PenPlat"]
+shape = SubResource("RectangleShape2D_wl7ka")
+
+[node name="QuillPlat" type="RigidBody2D" parent="."]
+position = Vector2(1143, 693)
+script = ExtResource("4_c87ny")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="QuillPlat"]
+shape = SubResource("RectangleShape2D_wl7ka")
+
+[node name="EraserPlat" type="RigidBody2D" parent="."]
+position = Vector2(547, 792)
+script = ExtResource("5_m0p7j")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EraserPlat"]
+shape = SubResource("RectangleShape2D_wl7ka")
+
+[node name="LetterBonus" type="RigidBody2D" parent="."]
+position = Vector2(1450, 140)
+script = ExtResource("6_yljlq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LetterBonus"]
+shape = SubResource("RectangleShape2D_wl7ka")
+
+[node name="GameState" type="Node2D" parent="."]
+script = ExtResource("7_k5p4p")
+
+[node name="GUI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="GUI"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+script = ExtResource("8_brn83")
