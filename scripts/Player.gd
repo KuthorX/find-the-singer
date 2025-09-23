@@ -4,19 +4,28 @@ extends CharacterBody2D
 @export var ACCEL_SPEED = 600.0
 @export var JUMP_VELOCITY = -400.0
 
+var has_jump_before_on_floor = false
+
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
+
+func is_player():
+	pass
 
 func _physics_process(delta):
 	# Add the gravity.
 	if not is_on_floor():
 		print("not is_on_floor")
 		velocity.y += gravity * delta
+	
+	if is_on_floor():
+		has_jump_before_on_floor = false
 
 	# Handle jump.
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
+	if Input.is_action_just_pressed("ui_accept") and not has_jump_before_on_floor:
 		print("is_on_floor and jump")
 		velocity.y = JUMP_VELOCITY
+		has_jump_before_on_floor = true
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
