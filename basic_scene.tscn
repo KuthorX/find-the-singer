@@ -1,14 +1,16 @@
-[gd_scene load_steps=12 format=3 uid="uid://3y1yfirmoqb5"]
+[gd_scene load_steps=15 format=3 uid="uid://3y1yfirmoqb5"]
 
 [ext_resource type="Script" uid="uid://bgyvlelyydjdx" path="res://scripts/Player.gd" id="1_2b24p"]
 [ext_resource type="Texture2D" uid="uid://crcjlyk0hi0iy" path="res://images/tiantian.png" id="2_r6pda"]
 [ext_resource type="Texture2D" uid="uid://dvm63t7ipvhxa" path="res://images/plat.png" id="4_m0p7j"]
 [ext_resource type="Script" uid="uid://c3vq4ujdi8iu2" path="res://scripts/FragileFloor.gd" id="6_5f4ac"]
+[ext_resource type="Script" uid="uid://wwij6i6vhrtm" path="res://scripts/MoveableFloor.gd" id="7_cxlks"]
 [ext_resource type="Script" uid="uid://da82rbkomc52u" path="res://scripts/GameState.gd" id="7_k5p4p"]
 [ext_resource type="Script" uid="uid://cr77jdmq78p1b" path="res://scripts/GUI_LetterBonus.gd" id="8_brn83"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_yljlq"]
-size = Vector2(140, 208)
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_cxlks"]
+radius = 62.0
+height = 190.00002
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r4pny"]
 size = Vector2(281, 71)
@@ -22,6 +24,12 @@ size = Vector2(276, 62)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cxlks"]
 size = Vector2(280, 66)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_alqpt"]
+size = Vector2(277, 66)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r6pda"]
+size = Vector2(277, 68)
+
 [node name="Node2D" type="Node2D"]
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -31,7 +39,7 @@ offset = Vector2(960, 540)
 script = ExtResource("7_k5p4p")
 
 [node name="Player" type="CharacterBody2D" parent="."]
-position = Vector2(131, 936)
+position = Vector2(168, 894)
 script = ExtResource("1_2b24p")
 JUMP_VELOCITY = -600.0
 
@@ -41,7 +49,7 @@ texture = ExtResource("2_r6pda")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 position = Vector2(2, 2)
 rotation = 1.5707964
-shape = SubResource("RectangleShape2D_yljlq")
+shape = SubResource("CapsuleShape2D_cxlks")
 
 [node name="GUI" type="Control" parent="."]
 layout_mode = 3
@@ -103,6 +111,31 @@ ignore_time_scale = true
 [node name="AppearTimer" type="Timer" parent="FragileFloor"]
 wait_time = 3.0
 
+[node name="MoveableFloor" type="StaticBody2D" parent="."]
+position = Vector2(503, 706)
+script = ExtResource("7_cxlks")
+
+[node name="Sprite2D" type="Sprite2D" parent="MoveableFloor"]
+modulate = Color(0.75105435, 0.742458, 0.89835095, 1)
+texture = ExtResource("4_m0p7j")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MoveableFloor"]
+position = Vector2(1.5, -1)
+shape = SubResource("RectangleShape2D_alqpt")
+
+[node name="StartPoint" type="Marker2D" parent="MoveableFloor"]
+
+[node name="EndPoint" type="Marker2D" parent="MoveableFloor"]
+position = Vector2(459, -197)
+
+[node name="Area2D" type="Area2D" parent="MoveableFloor"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MoveableFloor/Area2D"]
+position = Vector2(1.5, -2)
+shape = SubResource("RectangleShape2D_r6pda")
+
 [connection signal="body_entered" from="FragileFloor" to="FragileFloor" method="_on_body_entered"]
 [connection signal="timeout" from="FragileFloor/DisappearTimer" to="FragileFloor" method="_on_disappear_timer_timeout"]
 [connection signal="timeout" from="FragileFloor/AppearTimer" to="FragileFloor" method="_on_appear_timer_timeout"]
+[connection signal="body_entered" from="MoveableFloor/Area2D" to="MoveableFloor" method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="MoveableFloor/Area2D" to="MoveableFloor" method="_on_area_2d_body_exited"]
