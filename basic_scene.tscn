@@ -153,9 +153,8 @@ ignore_time_scale = true
 [node name="AppearTimer" type="Timer" parent="FragileFloor"]
 wait_time = 3.0
 
-[node name="MoveableFloor" type="StaticBody2D" parent="."]
+[node name="MoveableFloor" type="AnimatableBody2D" parent="."]
 position = Vector2(1197, 715)
-constant_linear_velocity = Vector2(0, 100)
 script = ExtResource("7_cxlks")
 moveToEndSeconds = 3.0
 moveToStartSeconds = 3.0
@@ -190,6 +189,4 @@ shape = SubResource("RectangleShape2D_c87ny")
 [connection signal="body_entered" from="FragileFloor" to="FragileFloor" method="_on_body_entered"]
 [connection signal="timeout" from="FragileFloor/DisappearTimer" to="FragileFloor" method="_on_disappear_timer_timeout"]
 [connection signal="timeout" from="FragileFloor/AppearTimer" to="FragileFloor" method="_on_appear_timer_timeout"]
-[connection signal="body_entered" from="MoveableFloor/Area2D" to="MoveableFloor" method="_on_area_2d_body_entered"]
-[connection signal="body_exited" from="MoveableFloor/Area2D" to="MoveableFloor" method="_on_area_2d_body_exited"]
 [connection signal="body_entered" from="WorldBoundary" to="WorldBoundary" method="_on_body_entered"]
