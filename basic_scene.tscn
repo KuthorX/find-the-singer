@@ -1,9 +1,12 @@
-[gd_scene load_steps=17 format=3 uid="uid://3y1yfirmoqb5"]
+[gd_scene load_steps=20 format=3 uid="uid://3y1yfirmoqb5"]
 
 [ext_resource type="Script" uid="uid://bgyvlelyydjdx" path="res://scripts/Player.gd" id="1_2b24p"]
 [ext_resource type="Texture2D" uid="uid://crcjlyk0hi0iy" path="res://images/tiantian.png" id="2_r6pda"]
+[ext_resource type="Texture2D" uid="uid://c4nq0y7qb2kk0" path="res://images/letter.png" id="4_alqpt"]
 [ext_resource type="Texture2D" uid="uid://dvm63t7ipvhxa" path="res://images/plat.png" id="4_m0p7j"]
+[ext_resource type="Theme" uid="uid://df41yfnnnm3ge" path="res://fonts/theme/GUI_Number.tres" id="5_c87ny"]
 [ext_resource type="Script" uid="uid://c3vq4ujdi8iu2" path="res://scripts/FragileFloor.gd" id="6_5f4ac"]
+[ext_resource type="Script" uid="uid://by6p1gott32ig" path="res://scripts/GUI_Life.gd" id="7_c87ny"]
 [ext_resource type="Script" uid="uid://wwij6i6vhrtm" path="res://scripts/MoveableFloor.gd" id="7_cxlks"]
 [ext_resource type="Script" uid="uid://da82rbkomc52u" path="res://scripts/GameState.gd" id="7_k5p4p"]
 [ext_resource type="Script" uid="uid://bi13ylbad4fyg" path="res://scripts/WorldBoundary.gd" id="8_2b24p"]
@@ -61,12 +64,47 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="Label" type="Label" parent="GUI"]
+[node name="VBoxContainer" type="VBoxContainer" parent="GUI"]
 layout_mode = 0
-offset_top = -1.0
-offset_right = 40.0
-offset_bottom = 22.0
+offset_left = 32.0
+offset_top = 24.0
+offset_right = 832.0
+offset_bottom = 228.0
+theme_override_constants/separation = 28
+
+[node name="LetterContainer" type="HBoxContainer" parent="GUI/VBoxContainer"]
+custom_minimum_size = Vector2(800, 100)
+layout_mode = 2
+theme_override_constants/separation = 42
+
+[node name="TextureRect" type="TextureRect" parent="GUI/VBoxContainer/LetterContainer"]
+layout_mode = 2
+texture = ExtResource("4_alqpt")
+expand_mode = 3
+
+[node name="Value" type="Label" parent="GUI/VBoxContainer/LetterContainer"]
+layout_mode = 2
+theme = ExtResource("5_c87ny")
+text = "0"
 script = ExtResource("8_brn83")
+
+[node name="LifeContainer" type="HBoxContainer" parent="GUI/VBoxContainer"]
+custom_minimum_size = Vector2(800, 100)
+layout_direction = 2
+layout_mode = 2
+theme_override_constants/separation = 42
+
+[node name="Icon" type="TextureRect" parent="GUI/VBoxContainer/LifeContainer"]
+layout_mode = 2
+texture = ExtResource("2_r6pda")
+expand_mode = 3
+
+[node name="Value" type="Label" parent="GUI/VBoxContainer/LifeContainer"]
+layout_mode = 2
+theme = ExtResource("5_c87ny")
+text = "5"
+vertical_alignment = 1
+script = ExtResource("7_c87ny")
 
 [node name="Floor" type="StaticBody2D" parent="."]
 position = Vector2(144, 1035)
@@ -117,8 +155,10 @@ wait_time = 3.0
 
 [node name="MoveableFloor" type="StaticBody2D" parent="."]
 position = Vector2(1197, 715)
-constant_linear_velocity = Vector2(0, 50)
+constant_linear_velocity = Vector2(0, 100)
 script = ExtResource("7_cxlks")
+moveToEndSeconds = 3.0
+moveToStartSeconds = 3.0
 
 [node name="Sprite2D" type="Sprite2D" parent="MoveableFloor"]
 modulate = Color(0.75105435, 0.742458, 0.89835095, 1)

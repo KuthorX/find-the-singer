@@ -1,5 +1,8 @@
 extends StaticBody2D
 
+@export var moveToEndSeconds = 2.0
+@export var moveToStartSeconds = 2.0
+
 var player_on_platform = null # 存储站在平台上的玩家引用
 var previous_position = Vector2.ZERO # 记录平台上一帧的位置
 
@@ -16,10 +19,10 @@ func _set_tween():
 	
 	# 创建 Tween
 	var tween: Tween = get_tree().create_tween()
-	tween.tween_property(self, "position", end_pos, 2.0).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
+	tween.tween_property(self, "position", end_pos, moveToEndSeconds).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
 	
 	# 可选：循环移动（从起点到终点，再回到起点）
-	tween.tween_property(self, "position", start_pos, 2.0)
+	tween.tween_property(self, "position", start_pos, moveToStartSeconds).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
 	tween.set_loops()  # 无限循环
 
 func _physics_process(delta):

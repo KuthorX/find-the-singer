@@ -1,0 +1,7 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://df41yfnnnm3ge"]
+
+[ext_resource type="FontFile" uid="uid://cahop575b4dd7" path="res://fonts/EmilysCandy-Regular.ttf" id="1_qun0h"]
+
+[resource]
+default_font = ExtResource("1_qun0h")
+default_font_size = 64
