@@ -5,9 +5,13 @@ extends CharacterBody2D
 @export var JUMP_VELOCITY = -400.0
 
 var has_jump_before_on_floor = false
+var checkpoint_pos = Vector2.ZERO
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
+
+func _ready() -> void:
+	checkpoint_pos = position
 
 func is_player():
 	pass
@@ -15,7 +19,6 @@ func is_player():
 func _physics_process(delta):
 	# Add the gravity.
 	if not is_on_floor():
-		print("not is_on_floor")
 		velocity.y += gravity * delta
 	
 	if is_on_floor():
@@ -23,7 +26,6 @@ func _physics_process(delta):
 
 	# Handle jump.
 	if Input.is_action_just_pressed("ui_accept") and not has_jump_before_on_floor:
-		print("is_on_floor and jump")
 		velocity.y = JUMP_VELOCITY
 		has_jump_before_on_floor = true
 
@@ -35,7 +37,6 @@ func _physics_process(delta):
 		current_speed = ACCEL_SPEED
 	
 	if direction:
-		print("direction hit")
 		velocity.x = direction * current_speed
 	else:
 		velocity.x = 0
@@ -46,3 +47,10 @@ func _physics_process(delta):
 		var collision = get_slide_collision(i)
 		if "Groud" in collision.get_collider().name:
 			print("碰撞已发生")
+
+func move_to_checkpoint():
+	velocity = Vector2.ZERO
+	position = checkpoint_pos
+
+func save_checkpoint():
+	checkpoint_pos = position

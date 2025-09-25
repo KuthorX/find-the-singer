@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://3y1yfirmoqb5"]
+[gd_scene load_steps=17 format=3 uid="uid://3y1yfirmoqb5"]
 
 [ext_resource type="Script" uid="uid://bgyvlelyydjdx" path="res://scripts/Player.gd" id="1_2b24p"]
 [ext_resource type="Texture2D" uid="uid://crcjlyk0hi0iy" path="res://images/tiantian.png" id="2_r6pda"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://c3vq4ujdi8iu2" path="res://scripts/FragileFloor.gd" id="6_5f4ac"]
 [ext_resource type="Script" uid="uid://wwij6i6vhrtm" path="res://scripts/MoveableFloor.gd" id="7_cxlks"]
 [ext_resource type="Script" uid="uid://da82rbkomc52u" path="res://scripts/GameState.gd" id="7_k5p4p"]
+[ext_resource type="Script" uid="uid://bi13ylbad4fyg" path="res://scripts/WorldBoundary.gd" id="8_2b24p"]
 [ext_resource type="Script" uid="uid://cr77jdmq78p1b" path="res://scripts/GUI_LetterBonus.gd" id="8_brn83"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_cxlks"]
@@ -29,6 +30,9 @@ size = Vector2(277, 66)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r6pda"]
 size = Vector2(277, 68)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c87ny"]
+size = Vector2(3615, 87)
 
 [node name="Node2D" type="Node2D"]
 
@@ -112,7 +116,7 @@ ignore_time_scale = true
 wait_time = 3.0
 
 [node name="MoveableFloor" type="StaticBody2D" parent="."]
-position = Vector2(500, 707)
+position = Vector2(1197, 715)
 constant_linear_velocity = Vector2(0, 50)
 script = ExtResource("7_cxlks")
 
@@ -127,7 +131,7 @@ shape = SubResource("RectangleShape2D_alqpt")
 [node name="StartPoint" type="Marker2D" parent="MoveableFloor"]
 
 [node name="EndPoint" type="Marker2D" parent="MoveableFloor"]
-position = Vector2(459, -197)
+position = Vector2(799, -410)
 
 [node name="Area2D" type="Area2D" parent="MoveableFloor"]
 
@@ -135,8 +139,17 @@ position = Vector2(459, -197)
 position = Vector2(1.5, -2)
 shape = SubResource("RectangleShape2D_r6pda")
 
+[node name="WorldBoundary" type="Area2D" parent="."]
+position = Vector2(19, 1139)
+script = ExtResource("8_2b24p")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldBoundary"]
+position = Vector2(1725.5, 33.5)
+shape = SubResource("RectangleShape2D_c87ny")
+
 [connection signal="body_entered" from="FragileFloor" to="FragileFloor" method="_on_body_entered"]
 [connection signal="timeout" from="FragileFloor/DisappearTimer" to="FragileFloor" method="_on_disappear_timer_timeout"]
 [connection signal="timeout" from="FragileFloor/AppearTimer" to="FragileFloor" method="_on_appear_timer_timeout"]
 [connection signal="body_entered" from="MoveableFloor/Area2D" to="MoveableFloor" method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="MoveableFloor/Area2D" to="MoveableFloor" method="_on_area_2d_body_exited"]
+[connection signal="body_entered" from="WorldBoundary" to="WorldBoundary" method="_on_body_entered"]
