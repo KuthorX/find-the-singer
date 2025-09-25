@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://3y1yfirmoqb5"]
+[gd_scene load_steps=21 format=3 uid="uid://3y1yfirmoqb5"]
 
 [ext_resource type="Script" uid="uid://bgyvlelyydjdx" path="res://scripts/Player.gd" id="1_2b24p"]
 [ext_resource type="Texture2D" uid="uid://crcjlyk0hi0iy" path="res://images/tiantian.png" id="2_r6pda"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://by6p1gott32ig" path="res://scripts/GUI_Life.gd" id="7_c87ny"]
 [ext_resource type="Script" uid="uid://wwij6i6vhrtm" path="res://scripts/MoveableFloor.gd" id="7_cxlks"]
 [ext_resource type="Script" uid="uid://da82rbkomc52u" path="res://scripts/GameState.gd" id="7_k5p4p"]
+[ext_resource type="Script" uid="uid://dhrtl5df6k7rn" path="res://scripts/Camera.gd" id="7_m0p7j"]
 [ext_resource type="Script" uid="uid://bi13ylbad4fyg" path="res://scripts/WorldBoundary.gd" id="8_2b24p"]
 [ext_resource type="Script" uid="uid://cr77jdmq78p1b" path="res://scripts/GUI_LetterBonus.gd" id="8_brn83"]
 
@@ -39,11 +40,58 @@ size = Vector2(3615, 87)
 
 [node name="Node2D" type="Node2D"]
 
-[node name="Camera2D" type="Camera2D" parent="."]
-offset = Vector2(960, 540)
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
+offset_left = 32.0
+offset_top = 24.0
+offset_right = 832.0
+offset_bottom = 252.0
+theme_override_constants/separation = 28
+
+[node name="LetterContainer" type="HBoxContainer" parent="CanvasLayer/VBoxContainer"]
+custom_minimum_size = Vector2(800, 100)
+layout_mode = 2
+theme_override_constants/separation = 42
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/VBoxContainer/LetterContainer"]
+layout_mode = 2
+texture = ExtResource("4_alqpt")
+expand_mode = 3
+
+[node name="Value" type="Label" parent="CanvasLayer/VBoxContainer/LetterContainer"]
+layout_mode = 2
+theme = ExtResource("5_c87ny")
+text = "0"
+script = ExtResource("8_brn83")
+
+[node name="LifeContainer" type="HBoxContainer" parent="CanvasLayer/VBoxContainer"]
+custom_minimum_size = Vector2(800, 100)
+layout_direction = 2
+layout_mode = 2
+theme_override_constants/separation = 42
+
+[node name="Icon" type="TextureRect" parent="CanvasLayer/VBoxContainer/LifeContainer"]
+layout_mode = 2
+texture = ExtResource("2_r6pda")
+expand_mode = 3
+
+[node name="Value" type="Label" parent="CanvasLayer/VBoxContainer/LifeContainer"]
+layout_mode = 2
+theme = ExtResource("5_c87ny")
+text = "5"
+vertical_alignment = 1
+script = ExtResource("7_c87ny")
 
 [node name="GameState" type="Node2D" parent="."]
 script = ExtResource("7_k5p4p")
+
+[node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("target")]
+script = ExtResource("7_m0p7j")
+target = NodePath("../Player")
+map_max_x = 4000.0
+map_min_y = -3000.0
+height_threshold = 480.0
 
 [node name="Player" type="CharacterBody2D" parent="."]
 position = Vector2(168, 894)
@@ -57,54 +105,6 @@ texture = ExtResource("2_r6pda")
 position = Vector2(2, 2)
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_cxlks")
-
-[node name="GUI" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="GUI"]
-layout_mode = 0
-offset_left = 32.0
-offset_top = 24.0
-offset_right = 832.0
-offset_bottom = 228.0
-theme_override_constants/separation = 28
-
-[node name="LetterContainer" type="HBoxContainer" parent="GUI/VBoxContainer"]
-custom_minimum_size = Vector2(800, 100)
-layout_mode = 2
-theme_override_constants/separation = 42
-
-[node name="TextureRect" type="TextureRect" parent="GUI/VBoxContainer/LetterContainer"]
-layout_mode = 2
-texture = ExtResource("4_alqpt")
-expand_mode = 3
-
-[node name="Value" type="Label" parent="GUI/VBoxContainer/LetterContainer"]
-layout_mode = 2
-theme = ExtResource("5_c87ny")
-text = "0"
-script = ExtResource("8_brn83")
-
-[node name="LifeContainer" type="HBoxContainer" parent="GUI/VBoxContainer"]
-custom_minimum_size = Vector2(800, 100)
-layout_direction = 2
-layout_mode = 2
-theme_override_constants/separation = 42
-
-[node name="Icon" type="TextureRect" parent="GUI/VBoxContainer/LifeContainer"]
-layout_mode = 2
-texture = ExtResource("2_r6pda")
-expand_mode = 3
-
-[node name="Value" type="Label" parent="GUI/VBoxContainer/LifeContainer"]
-layout_mode = 2
-theme = ExtResource("5_c87ny")
-text = "5"
-vertical_alignment = 1
-script = ExtResource("7_c87ny")
 
 [node name="Floor" type="StaticBody2D" parent="."]
 position = Vector2(144, 1035)
@@ -185,6 +185,18 @@ script = ExtResource("8_2b24p")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldBoundary"]
 position = Vector2(1725.5, 33.5)
 shape = SubResource("RectangleShape2D_c87ny")
+
+[node name="Groud" type="Node2D" parent="."]
+
+[node name="Floor" type="StaticBody2D" parent="Groud"]
+position = Vector2(2378, 375)
+
+[node name="Sprite2D" type="Sprite2D" parent="Groud/Floor"]
+texture = ExtResource("4_m0p7j")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Groud/Floor"]
+position = Vector2(3.5, -2.5)
+shape = SubResource("RectangleShape2D_r4pny")
 
 [connection signal="body_entered" from="FragileFloor" to="FragileFloor" method="_on_body_entered"]
 [connection signal="timeout" from="FragileFloor/DisappearTimer" to="FragileFloor" method="_on_disappear_timer_timeout"]
