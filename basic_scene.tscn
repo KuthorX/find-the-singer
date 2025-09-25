@@ -112,7 +112,8 @@ ignore_time_scale = true
 wait_time = 3.0
 
 [node name="MoveableFloor" type="StaticBody2D" parent="."]
-position = Vector2(503, 706)
+position = Vector2(500, 707)
+constant_linear_velocity = Vector2(0, 50)
 script = ExtResource("7_cxlks")
 
 [node name="Sprite2D" type="Sprite2D" parent="MoveableFloor"]
