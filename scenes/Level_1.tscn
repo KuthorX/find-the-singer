@@ -407,7 +407,7 @@ offset_right = 711.0
 offset_bottom = 785.0
 theme = ExtResource("2_owcbc")
 theme_override_font_sizes/font_size = 36
-text = "Move: ← →
+text = "Move: Left Arrow / Right Arrow
 Run: Shift
 Jump: Space"
 vertical_alignment = 1
@@ -491,23 +491,23 @@ position = Vector2(2.5, -2)
 shape = SubResource("RectangleShape2D_5f4ac")
 
 [node name="Hint2" type="Label" parent="Map"]
-offset_left = 675.0
-offset_top = 897.0
-offset_right = 1316.0
-offset_bottom = 1047.0
+offset_left = 308.0
+offset_top = 894.0
+offset_right = 949.0
+offset_bottom = 1044.0
 theme = ExtResource("2_owcbc")
 theme_override_font_sizes/font_size = 36
-text = "← Watch Out! It's FRAGILE !"
+text = " Watch Out! It's FRAGILE !"
 vertical_alignment = 1
 
 [node name="Hint3" type="Label" parent="Map"]
-offset_left = 1036.0
-offset_top = 793.0
-offset_right = 1677.0
-offset_bottom = 943.0
+offset_left = 675.0
+offset_top = 795.0
+offset_right = 1316.0
+offset_bottom = 945.0
 theme = ExtResource("2_owcbc")
 theme_override_font_sizes/font_size = 36
-text = "← You can jump HIGHER !"
+text = "You can jump HIGHER !"
 vertical_alignment = 1
 
 [node name="Hint4" type="Label" parent="Map"]
