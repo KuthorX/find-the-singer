@@ -1,0 +1,661 @@
+[gd_scene load_steps=32 format=3 uid="uid://3y1yfirmoqb5"]
+
+[ext_resource type="Texture2D" uid="uid://c4nq0y7qb2kk0" path="res://images/letter.png" id="1_5viah"]
+[ext_resource type="Texture2D" uid="uid://cuyhnwufhfd5f" path="res://images/clock.png" id="1_owcbc"]
+[ext_resource type="Theme" uid="uid://df41yfnnnm3ge" path="res://fonts/theme/GUI_Number.tres" id="2_owcbc"]
+[ext_resource type="Script" uid="uid://cr77jdmq78p1b" path="res://scripts/GUI_Letter.gd" id="3_8ey7k"]
+[ext_resource type="Script" uid="uid://bprkulr766ce2" path="res://scripts/GUI_Clock.gd" id="3_spmks"]
+[ext_resource type="Texture2D" uid="uid://crcjlyk0hi0iy" path="res://images/tiantian.png" id="4_spmks"]
+[ext_resource type="Script" uid="uid://by6p1gott32ig" path="res://scripts/GUI_Life.gd" id="5_6ho6w"]
+[ext_resource type="Script" uid="uid://da82rbkomc52u" path="res://scripts/GameState.gd" id="6_2qcc1"]
+[ext_resource type="Script" uid="uid://dhrtl5df6k7rn" path="res://scripts/Camera.gd" id="7_op4va"]
+[ext_resource type="Script" uid="uid://bgyvlelyydjdx" path="res://scripts/Player.gd" id="8_g1p3b"]
+[ext_resource type="Texture2D" uid="uid://dvm63t7ipvhxa" path="res://images/plat.png" id="9_71ekq"]
+[ext_resource type="Script" uid="uid://c3vq4ujdi8iu2" path="res://scripts/FragileFloor.gd" id="10_nqobt"]
+[ext_resource type="Script" uid="uid://wwij6i6vhrtm" path="res://scripts/MoveableFloor.gd" id="11_gn1td"]
+[ext_resource type="Script" uid="uid://bi13ylbad4fyg" path="res://scripts/WorldBoundary.gd" id="12_3qd3g"]
+[ext_resource type="Script" uid="uid://8835540nq8lr" path="res://scripts/CameraArea.gd" id="13_4n31n"]
+[ext_resource type="Script" uid="uid://gcl107yy7edn" path="res://scripts/Letter.gd" id="14_wf7sx"]
+[ext_resource type="Script" uid="uid://cknw6v8ijeppf" path="res://scripts/Checkpoint.gd" id="16_6ho6w"]
+[ext_resource type="Texture2D" uid="uid://elc2kt1jk0aj" path="res://images/checkpoint.png" id="16_spmks"]
+[ext_resource type="Texture2D" uid="uid://bcr337fdf1guk" path="res://images/ElementSource.png" id="18_2qcc1"]
+[ext_resource type="Script" uid="uid://bt26pxmsqig5o" path="res://scripts/EndPoint.gd" id="18_op4va"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_cxlks"]
+radius = 62.0
+height = 190.00002
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c87ny"]
+size = Vector2(10115, 170)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r4pny"]
+size = Vector2(281, 71)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5f4ac"]
+size = Vector2(281, 62)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2b24p"]
+size = Vector2(276, 62)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cxlks"]
+size = Vector2(280, 66)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_alqpt"]
+size = Vector2(277, 66)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r6pda"]
+size = Vector2(277, 68)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yljlq"]
+size = Vector2(198.57126, 129)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_op4va"]
+size = Vector2(3109, 1999)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k5p4p"]
+size = Vector2(2687.5, 1258)
+
+[node name="Level_1" type="Node2D"]
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="ClockContainer" type="HBoxContainer" parent="UI"]
+custom_minimum_size = Vector2(800, 100)
+offset_left = 32.0
+offset_top = 24.0
+offset_right = 832.0
+offset_bottom = 124.0
+theme_override_constants/separation = 34
+
+[node name="TextureRect" type="TextureRect" parent="UI/ClockContainer"]
+layout_mode = 2
+texture = ExtResource("1_owcbc")
+expand_mode = 3
+
+[node name="Value" type="Label" parent="UI/ClockContainer"]
+layout_mode = 2
+theme = ExtResource("2_owcbc")
+text = "0"
+script = ExtResource("3_spmks")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI"]
+offset_left = 39.0
+offset_top = 149.0
+offset_right = 839.0
+offset_bottom = 377.0
+theme_override_constants/separation = 28
+
+[node name="LetterContainer" type="HBoxContainer" parent="UI/VBoxContainer"]
+custom_minimum_size = Vector2(800, 90)
+layout_mode = 2
+theme_override_constants/separation = 42
+
+[node name="TextureRect" type="TextureRect" parent="UI/VBoxContainer/LetterContainer"]
+layout_mode = 2
+texture = ExtResource("1_5viah")
+expand_mode = 3
+
+[node name="Value" type="Label" parent="UI/VBoxContainer/LetterContainer"]
+layout_mode = 2
+theme = ExtResource("2_owcbc")
+text = "0"
+script = ExtResource("3_8ey7k")
+
+[node name="LifeContainer" type="HBoxContainer" parent="UI/VBoxContainer"]
+custom_minimum_size = Vector2(800, 90)
+layout_direction = 2
+layout_mode = 2
+theme_override_constants/separation = 42
+
+[node name="Icon" type="TextureRect" parent="UI/VBoxContainer/LifeContainer"]
+layout_mode = 2
+texture = ExtResource("4_spmks")
+expand_mode = 3
+
+[node name="Value" type="Label" parent="UI/VBoxContainer/LifeContainer"]
+layout_mode = 2
+theme = ExtResource("2_owcbc")
+text = "5"
+vertical_alignment = 1
+script = ExtResource("5_6ho6w")
+
+[node name="GameState" type="Node2D" parent="."]
+script = ExtResource("6_2qcc1")
+
+[node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("target") groups=["camera"]]
+position = Vector2(-1, 0)
+script = ExtResource("7_op4va")
+target = NodePath("../Player")
+map_min_x = -3000.0
+map_max_x = 4000.0
+map_min_y = -3000.0
+map_max_y = 3000.0
+
+[node name="Player" type="CharacterBody2D" parent="." groups=["player"]]
+position = Vector2(151, 894)
+script = ExtResource("8_g1p3b")
+JUMP_VELOCITY = -600.0
+
+[node name="Sprite2D" type="Sprite2D" parent="Player"]
+texture = ExtResource("4_spmks")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+position = Vector2(2, 2)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_cxlks")
+
+[node name="Map" type="Node2D" parent="."]
+
+[node name="WorldBoundary" type="Area2D" parent="Map"]
+position = Vector2(19, 1139)
+script = ExtResource("12_3qd3g")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/WorldBoundary"]
+position = Vector2(1120.5, 75)
+shape = SubResource("RectangleShape2D_c87ny")
+
+[node name="StaticFloor" type="StaticBody2D" parent="Map"]
+position = Vector2(2378, 375)
+
+[node name="Sprite2D" type="Sprite2D" parent="Map/StaticFloor"]
+texture = ExtResource("9_71ekq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/StaticFloor"]
+position = Vector2(3.5, -2.5)
+shape = SubResource("RectangleShape2D_r4pny")
+
+[node name="StaticFloor2" type="StaticBody2D" parent="Map"]
+position = Vector2(144, 1035)
+
+[node name="Sprite2D" type="Sprite2D" parent="Map/StaticFloor2"]
+texture = ExtResource("9_71ekq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/StaticFloor2"]
+position = Vector2(3.5, -2.5)
+shape = SubResource("RectangleShape2D_r4pny")
+
+[node name="BounceFloor" type="StaticBody2D" parent="Map"]
+position = Vector2(864, 869)
+constant_linear_velocity = Vector2(0, -300)
+
+[node name="Sprite2D" type="Sprite2D" parent="Map/BounceFloor"]
+modulate = Color(0.90646636, 0.79660636, 0.380078, 1)
+texture = ExtResource("9_71ekq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/BounceFloor"]
+position = Vector2(2.5, -2)
+shape = SubResource("RectangleShape2D_5f4ac")
+
+[node name="FragileFloor" type="Area2D" parent="Map"]
+position = Vector2(508, 970)
+script = ExtResource("10_nqobt")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Map/FragileFloor"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/FragileFloor/StaticBody2D"]
+position = Vector2(3, -2)
+shape = SubResource("RectangleShape2D_2b24p")
+
+[node name="Sprite2D" type="Sprite2D" parent="Map/FragileFloor"]
+modulate = Color(0.9859453, 0.8676859, 0.8142594, 1)
+texture = ExtResource("9_71ekq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/FragileFloor"]
+position = Vector2(3, -2)
+shape = SubResource("RectangleShape2D_cxlks")
+
+[node name="DisappearTimer" type="Timer" parent="Map/FragileFloor"]
+one_shot = true
+ignore_time_scale = true
+
+[node name="AppearTimer" type="Timer" parent="Map/FragileFloor"]
+wait_time = 3.0
+
+[node name="MoveableFloor" type="AnimatableBody2D" parent="Map"]
+position = Vector2(1197, 715)
+script = ExtResource("11_gn1td")
+moveToEndSeconds = 3.0
+moveToStartSeconds = 3.0
+
+[node name="Sprite2D" type="Sprite2D" parent="Map/MoveableFloor"]
+modulate = Color(0.75105435, 0.742458, 0.89835095, 1)
+texture = ExtResource("9_71ekq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/MoveableFloor"]
+position = Vector2(1.5, -1)
+shape = SubResource("RectangleShape2D_alqpt")
+
+[node name="StartPoint" type="Marker2D" parent="Map/MoveableFloor"]
+
+[node name="EndPoint" type="Marker2D" parent="Map/MoveableFloor"]
+position = Vector2(799, -410)
+
+[node name="Area2D" type="Area2D" parent="Map/MoveableFloor"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/MoveableFloor/Area2D"]
+position = Vector2(1.5, -2)
+shape = SubResource("RectangleShape2D_r6pda")
+
+[node name="StaticFloor3" type="StaticBody2D" parent="Map"]
+position = Vector2(2682, 178)
+
+[node name="Sprite2D" type="Sprite2D" parent="Map/StaticFloor3"]
+texture = ExtResource("9_71ekq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/StaticFloor3"]
+position = Vector2(3.5, -2.5)
+shape = SubResource("RectangleShape2D_r4pny")
+
+[node name="Letter" type="Area2D" parent="Map"]
+position = Vector2(1270, 213.99998)
+scale = Vector2(0.7, 0.7)
+script = ExtResource("14_wf7sx")
+
+[node name="Sprite2D" type="Sprite2D" parent="Map/Letter"]
+texture = ExtResource("1_5viah")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/Letter"]
+position = Vector2(-1, -2.5)
+shape = SubResource("RectangleShape2D_yljlq")
+
+[node name="StaticFloor4" type="StaticBody2D" parent="Map"]
+position = Vector2(3115, 48)
+
+[node name="Sprite2D" type="Sprite2D" parent="Map/StaticFloor4"]
+texture = ExtResource("9_71ekq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/StaticFloor4"]
+position = Vector2(3.5, -2.5)
+shape = SubResource("RectangleShape2D_r4pny")
+
+[node name="MoveableFloor2" type="AnimatableBody2D" parent="Map"]
+position = Vector2(3524, 34)
+script = ExtResource("11_gn1td")
+moveToEndSeconds = 3.0
+moveToStartSeconds = 3.0
+
+[node name="Sprite2D" type="Sprite2D" parent="Map/MoveableFloor2"]
+modulate = Color(0.75105435, 0.742458, 0.89835095, 1)
+texture = ExtResource("9_71ekq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/MoveableFloor2"]
+position = Vector2(1.5, -1)
+shape = SubResource("RectangleShape2D_alqpt")
+
+[node name="StartPoint" type="Marker2D" parent="Map/MoveableFloor2"]
+
+[node name="EndPoint" type="Marker2D" parent="Map/MoveableFloor2"]
+position = Vector2(-1204, -550)
+
+[node name="Area2D" type="Area2D" parent="Map/MoveableFloor2"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/MoveableFloor2/Area2D"]
+position = Vector2(1.5, -2)
+shape = SubResource("RectangleShape2D_r6pda")
+
+[node name="BounceFloor2" type="StaticBody2D" parent="Map"]
+position = Vector2(1882, -408)
+constant_linear_velocity = Vector2(0, -600)
+
+[node name="Sprite2D" type="Sprite2D" parent="Map/BounceFloor2"]
+modulate = Color(0.90646636, 0.79660636, 0.380078, 1)
+texture = ExtResource("9_71ekq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/BounceFloor2"]
+position = Vector2(2.5, -2)
+shape = SubResource("RectangleShape2D_5f4ac")
+
+[node name="StaticFloor5" type="StaticBody2D" parent="Map"]
+position = Vector2(2146, -864)
+
+[node name="Sprite2D" type="Sprite2D" parent="Map/StaticFloor5"]
+texture = ExtResource("9_71ekq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/StaticFloor5"]
+position = Vector2(3.5, -2.5)
+shape = SubResource("RectangleShape2D_r4pny")
+
+[node name="Letter2" type="Area2D" parent="Map"]
+position = Vector2(1581, -790)
+scale = Vector2(0.7, 0.7)
+script = ExtResource("14_wf7sx")
+
+[node name="Sprite2D" type="Sprite2D" parent="Map/Letter2"]
+texture = ExtResource("1_5viah")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/Letter2"]
+position = Vector2(-0.71435547, -2.5)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_yljlq")
+
+[node name="Letter3" type="Area2D" parent="Map"]
+position = Vector2(3115.9998, -685)
+scale = Vector2(0.7, 0.7)
+script = ExtResource("14_wf7sx")
+
+[node name="Sprite2D" type="Sprite2D" parent="Map/Letter3"]
+texture = ExtResource("1_5viah")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/Letter3"]
+position = Vector2(-1, -2.5)
+shape = SubResource("RectangleShape2D_yljlq")
+
+[node name="Letter4" type="Area2D" parent="Map"]
+position = Vector2(521, 848.9999)
+scale = Vector2(0.7, 0.7)
+script = ExtResource("14_wf7sx")
+
+[node name="Sprite2D" type="Sprite2D" parent="Map/Letter4"]
+texture = ExtResource("1_5viah")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/Letter4"]
+position = Vector2(-1, -2.5)
+shape = SubResource("RectangleShape2D_yljlq")
+
+[node name="Letter5" type="Area2D" parent="Map"]
+position = Vector2(870, 750)
+scale = Vector2(0.7, 0.7)
+script = ExtResource("14_wf7sx")
+
+[node name="Sprite2D" type="Sprite2D" parent="Map/Letter5"]
+texture = ExtResource("1_5viah")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/Letter5"]
+position = Vector2(-1, -2.5)
+shape = SubResource("RectangleShape2D_yljlq")
+
+[node name="Letter6" type="Area2D" parent="Map"]
+position = Vector2(1207, 591)
+scale = Vector2(0.7, 0.7)
+script = ExtResource("14_wf7sx")
+
+[node name="Sprite2D" type="Sprite2D" parent="Map/Letter6"]
+texture = ExtResource("1_5viah")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/Letter6"]
+position = Vector2(-1, -2.5)
+shape = SubResource("RectangleShape2D_yljlq")
+
+[node name="Letter7" type="Area2D" parent="Map"]
+position = Vector2(2660.0002, 56.000015)
+scale = Vector2(0.7, 0.7)
+script = ExtResource("14_wf7sx")
+
+[node name="Sprite2D" type="Sprite2D" parent="Map/Letter7"]
+texture = ExtResource("1_5viah")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/Letter7"]
+position = Vector2(-1, -2.5)
+shape = SubResource("RectangleShape2D_yljlq")
+
+[node name="BounceFloor3" type="StaticBody2D" parent="Map"]
+position = Vector2(1573, -676)
+constant_linear_velocity = Vector2(0, -600)
+
+[node name="Sprite2D" type="Sprite2D" parent="Map/BounceFloor3"]
+modulate = Color(0.90646636, 0.79660636, 0.380078, 1)
+texture = ExtResource("9_71ekq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/BounceFloor3"]
+position = Vector2(2.5, -2)
+shape = SubResource("RectangleShape2D_5f4ac")
+
+[node name="Hint1" type="Label" parent="Map"]
+offset_left = 70.0
+offset_top = 635.0
+offset_right = 711.0
+offset_bottom = 785.0
+theme = ExtResource("2_owcbc")
+theme_override_font_sizes/font_size = 36
+text = "Move: ← →
+Run: Shift
+Jump: Space"
+vertical_alignment = 1
+
+[node name="StaticFloor6" type="StaticBody2D" parent="Map"]
+position = Vector2(2588, -963)
+
+[node name="Sprite2D" type="Sprite2D" parent="Map/StaticFloor6"]
+texture = ExtResource("9_71ekq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/StaticFloor6"]
+position = Vector2(3.5, -2.5)
+shape = SubResource("RectangleShape2D_r4pny")
+
+[node name="StaticFloor7" type="StaticBody2D" parent="Map"]
+position = Vector2(3027, -1070)
+
+[node name="Sprite2D" type="Sprite2D" parent="Map/StaticFloor7"]
+texture = ExtResource("9_71ekq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/StaticFloor7"]
+position = Vector2(3.5, -2.5)
+shape = SubResource("RectangleShape2D_r4pny")
+
+[node name="StaticFloor8" type="StaticBody2D" parent="Map"]
+position = Vector2(2588, -1261)
+
+[node name="Sprite2D" type="Sprite2D" parent="Map/StaticFloor8"]
+texture = ExtResource("9_71ekq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/StaticFloor8"]
+position = Vector2(3.5, -2.5)
+shape = SubResource("RectangleShape2D_r4pny")
+
+[node name="StaticFloor9" type="StaticBody2D" parent="Map"]
+position = Vector2(2070, -1299)
+
+[node name="Sprite2D" type="Sprite2D" parent="Map/StaticFloor9"]
+texture = ExtResource("9_71ekq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/StaticFloor9"]
+position = Vector2(3.5, -2.5)
+shape = SubResource("RectangleShape2D_r4pny")
+
+[node name="AccFloor" type="StaticBody2D" parent="Map"]
+position = Vector2(1589, -1412)
+rotation = 0.31939524
+constant_linear_velocity = Vector2(-1000, 10)
+constant_angular_velocity = 1.5707964
+
+[node name="Sprite2D" type="Sprite2D" parent="Map/AccFloor"]
+modulate = Color(0.2911, 0.71, 0.43771508, 1)
+texture = ExtResource("9_71ekq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/AccFloor"]
+position = Vector2(2.5, -2)
+shape = SubResource("RectangleShape2D_5f4ac")
+
+[node name="BounceFloor4" type="StaticBody2D" parent="Map"]
+position = Vector2(406, -1420)
+constant_linear_velocity = Vector2(0, -600)
+
+[node name="Sprite2D" type="Sprite2D" parent="Map/BounceFloor4"]
+modulate = Color(0.90646636, 0.79660636, 0.380078, 1)
+texture = ExtResource("9_71ekq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/BounceFloor4"]
+position = Vector2(2.5, -2)
+shape = SubResource("RectangleShape2D_5f4ac")
+
+[node name="BounceFloor5" type="StaticBody2D" parent="Map"]
+position = Vector2(-383, -1355)
+constant_linear_velocity = Vector2(0, -800)
+
+[node name="Sprite2D" type="Sprite2D" parent="Map/BounceFloor5"]
+modulate = Color(0.90646636, 0.79660636, 0.380078, 1)
+texture = ExtResource("9_71ekq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/BounceFloor5"]
+position = Vector2(2.5, -2)
+shape = SubResource("RectangleShape2D_5f4ac")
+
+[node name="Hint2" type="Label" parent="Map"]
+offset_left = 675.0
+offset_top = 897.0
+offset_right = 1316.0
+offset_bottom = 1047.0
+theme = ExtResource("2_owcbc")
+theme_override_font_sizes/font_size = 36
+text = "← Watch Out! It's FRAGILE !"
+vertical_alignment = 1
+
+[node name="Hint3" type="Label" parent="Map"]
+offset_left = 1036.0
+offset_top = 793.0
+offset_right = 1677.0
+offset_bottom = 943.0
+theme = ExtResource("2_owcbc")
+theme_override_font_sizes/font_size = 36
+text = "← You can jump HIGHER !"
+vertical_alignment = 1
+
+[node name="Hint4" type="Label" parent="Map"]
+offset_left = 906.0
+offset_top = 426.0
+offset_right = 1547.0
+offset_bottom = 576.0
+theme = ExtResource("2_owcbc")
+theme_override_font_sizes/font_size = 36
+text = "Collect as more LETTERS as you can !"
+vertical_alignment = 1
+
+[node name="Letter9" type="Area2D" parent="Map"]
+position = Vector2(990.99994, -1706)
+scale = Vector2(0.7, 0.7)
+script = ExtResource("14_wf7sx")
+
+[node name="Sprite2D" type="Sprite2D" parent="Map/Letter9"]
+texture = ExtResource("1_5viah")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/Letter9"]
+position = Vector2(-1, -2.5)
+shape = SubResource("RectangleShape2D_yljlq")
+
+[node name="Hint5" type="Label" parent="Map"]
+offset_left = 1409.0
+offset_top = -1392.0
+offset_right = 2050.0
+offset_bottom = -1242.0
+theme = ExtResource("2_owcbc")
+theme_override_font_sizes/font_size = 36
+text = "It's a liitle slippery ..."
+vertical_alignment = 1
+
+[node name="StaticFloor10" type="StaticBody2D" parent="Map"]
+position = Vector2(-811, -1792)
+
+[node name="Sprite2D" type="Sprite2D" parent="Map/StaticFloor10"]
+texture = ExtResource("9_71ekq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/StaticFloor10"]
+position = Vector2(3.5, -2.5)
+shape = SubResource("RectangleShape2D_r4pny")
+
+[node name="StaticFloor12" type="StaticBody2D" parent="Map"]
+position = Vector2(-1862, -1981)
+
+[node name="Sprite2D" type="Sprite2D" parent="Map/StaticFloor12"]
+texture = ExtResource("9_71ekq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/StaticFloor12"]
+position = Vector2(3.5, -2.5)
+shape = SubResource("RectangleShape2D_r4pny")
+
+[node name="StaticFloor11" type="StaticBody2D" parent="Map"]
+position = Vector2(-1380, -1859)
+
+[node name="Sprite2D" type="Sprite2D" parent="Map/StaticFloor11"]
+texture = ExtResource("9_71ekq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/StaticFloor11"]
+position = Vector2(3.5, -2.5)
+shape = SubResource("RectangleShape2D_r4pny")
+
+[node name="Checkpoint2" type="Area2D" parent="Map"]
+position = Vector2(2094, -1423)
+script = ExtResource("16_6ho6w")
+bounce_range = 40.0
+speed = 2.4
+
+[node name="Sprite2D" type="Sprite2D" parent="Map/Checkpoint2"]
+texture = ExtResource("16_spmks")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Map/Checkpoint2"]
+polygon = PackedVector2Array(-52.856934, -65.71387, 50, -35.713867, -40, -5.713867, -41.428467, 64.28613, -54.285645, 64.28613)
+
+[node name="Hint6" type="Label" parent="Map"]
+offset_left = 1486.0
+offset_top = -1652.0
+offset_right = 2713.0
+offset_bottom = -1502.0
+theme = ExtResource("2_owcbc")
+theme_override_font_sizes/font_size = 36
+text = "This is a CHECKPOINT !
+After you touch this, you will REBORN to here ! 
+( hoped that won't happened haha )"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Letter12" type="Area2D" parent="Map"]
+position = Vector2(-804.00006, -1913.9999)
+scale = Vector2(0.7, 0.7)
+script = ExtResource("14_wf7sx")
+
+[node name="Sprite2D" type="Sprite2D" parent="Map/Letter12"]
+texture = ExtResource("1_5viah")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/Letter12"]
+position = Vector2(-1, -2.5)
+shape = SubResource("RectangleShape2D_yljlq")
+
+[node name="EndPoint" type="Area2D" parent="Map"]
+position = Vector2(-1870, -2147)
+scale = Vector2(0.08, 0.08)
+script = ExtResource("18_op4va")
+
+[node name="Sprite2D" type="Sprite2D" parent="Map/EndPoint"]
+texture = ExtResource("18_2qcc1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/EndPoint"]
+position = Vector2(80, 58)
+shape = SubResource("RectangleShape2D_op4va")
+
+[node name="Hint7" type="Label" parent="Map"]
+offset_left = -2459.0
+offset_top = -2376.0
+offset_right = -1232.0
+offset_bottom = -2226.0
+theme = ExtResource("2_owcbc")
+theme_override_font_sizes/font_size = 36
+text = "Here is the ENDPOINT
+! CONGRATULATIONS !"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CameraAreas" type="Node2D" parent="."]
+visible = false
+
+[node name="Area2D" type="Area2D" parent="CameraAreas" groups=["camera_areas"]]
+position = Vector2(30, 37)
+script = ExtResource("13_4n31n")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CameraAreas/Area2D"]
+position = Vector2(1280, 562)
+shape = SubResource("RectangleShape2D_k5p4p")
+
+[connection signal="body_entered" from="Map/WorldBoundary" to="Map/WorldBoundary" method="_on_body_entered"]
+[connection signal="body_entered" from="Map/FragileFloor" to="Map/FragileFloor" method="_on_body_entered"]
+[connection signal="timeout" from="Map/FragileFloor/DisappearTimer" to="Map/FragileFloor" method="_on_disappear_timer_timeout"]
+[connection signal="timeout" from="Map/FragileFloor/AppearTimer" to="Map/FragileFloor" method="_on_appear_timer_timeout"]
+[connection signal="body_entered" from="Map/Letter" to="Map/Letter" method="_on_body_entered"]
+[connection signal="body_entered" from="Map/Letter2" to="Map/Letter2" method="_on_body_entered"]
+[connection signal="body_entered" from="Map/Letter3" to="Map/Letter3" method="_on_body_entered"]
+[connection signal="body_entered" from="Map/Letter4" to="Map/Letter4" method="_on_body_entered"]
+[connection signal="body_entered" from="Map/Letter5" to="Map/Letter5" method="_on_body_entered"]
+[connection signal="body_entered" from="Map/Letter6" to="Map/Letter6" method="_on_body_entered"]
+[connection signal="body_entered" from="Map/Letter7" to="Map/Letter7" method="_on_body_entered"]
+[connection signal="body_entered" from="Map/Letter9" to="Map/Letter9" method="_on_body_entered"]
+[connection signal="body_entered" from="Map/Checkpoint2" to="Map/Checkpoint2" method="_on_body_entered"]
+[connection signal="body_entered" from="Map/Letter12" to="Map/Letter12" method="_on_body_entered"]
+[connection signal="body_entered" from="Map/EndPoint" to="Map/EndPoint" method="_on_body_entered"]

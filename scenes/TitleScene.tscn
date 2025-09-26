@@ -1,0 +1,42 @@
+[gd_scene load_steps=4 format=3 uid="uid://bu3b4dlciigy6"]
+
+[ext_resource type="FontFile" uid="uid://cahop575b4dd7" path="res://fonts/EmilysCandy-Regular.ttf" id="1_7u1s4"]
+[ext_resource type="Script" uid="uid://2bjonim448hk" path="res://scripts/TitleScene/StartBtn.gd" id="2_n8eu1"]
+[ext_resource type="Script" uid="uid://51y2aadv4k8t" path="res://scripts/TitleScene/EndBtn.gd" id="3_n8eu1"]
+
+[node name="TitleScene" type="Node2D"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer"]
+custom_minimum_size = Vector2(1920, 1080)
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 48
+alignment = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_7u1s4")
+theme_override_font_sizes/font_size = 128
+text = "Find The Singer"
+
+[node name="StartBtn" type="Button" parent="CanvasLayer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_7u1s4")
+theme_override_font_sizes/font_size = 64
+text = "Start"
+script = ExtResource("2_n8eu1")
+
+[node name="ExitBtn" type="Button" parent="CanvasLayer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_7u1s4")
+theme_override_font_sizes/font_size = 64
+text = "Exit"
+script = ExtResource("3_n8eu1")
+
+[connection signal="pressed" from="CanvasLayer/CenterContainer/VBoxContainer/StartBtn" to="CanvasLayer/CenterContainer/VBoxContainer/StartBtn" method="_on_pressed"]
+[connection signal="pressed" from="CanvasLayer/CenterContainer/VBoxContainer/ExitBtn" to="CanvasLayer/CenterContainer/VBoxContainer/ExitBtn" method="_on_pressed"]

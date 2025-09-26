@@ -6,12 +6,14 @@ extends CharacterBody2D
 
 var has_jump_before_on_floor = false
 var checkpoint_pos = Vector2.ZERO
+var init_checkpoint_pos = Vector2.ZERO
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 func _ready() -> void:
 	checkpoint_pos = position
+	init_checkpoint_pos = checkpoint_pos
 
 func is_player():
 	pass
@@ -52,5 +54,10 @@ func move_to_checkpoint():
 	velocity = Vector2.ZERO
 	position = checkpoint_pos
 
-func save_checkpoint():
-	checkpoint_pos = position
+func save_checkpoint(checkpoint_position: Vector2):
+	print("save checkpoint")
+	checkpoint_pos = checkpoint_position
+
+func reset_to_init_checkpoint():
+	checkpoint_pos = init_checkpoint_pos
+	move_to_checkpoint()

@@ -1,0 +1,114 @@
+[gd_scene load_steps=5 format=3 uid="uid://bsn87gove5pva"]
+
+[ext_resource type="Script" uid="uid://cbsbsxuywtguv" path="res://scripts/FinishLevelScene/FinishLevelMsg.gd" id="1_b5luu"]
+[ext_resource type="FontFile" uid="uid://cahop575b4dd7" path="res://fonts/EmilysCandy-Regular.ttf" id="1_xkcup"]
+[ext_resource type="Script" uid="uid://he3dsl2k1ju1" path="res://scripts/GameOverScene/RetryBtn.gd" id="2_b5luu"]
+[ext_resource type="Script" uid="uid://dt5tgdcawmobr" path="res://scripts/GameOverScene/BackToMenuBtn.gd" id="3_b20kx"]
+
+[node name="FinishLevel" type="Node2D"]
+script = ExtResource("1_b5luu")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+custom_minimum_size = Vector2(1920, 1080)
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 48
+alignment = 1
+
+[node name="Hint" type="Label" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_xkcup")
+theme_override_font_sizes/font_size = 128
+text = "Level Complete !"
+horizontal_alignment = 1
+
+[node name="Level" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 64
+alignment = 1
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/Level"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_xkcup")
+theme_override_font_sizes/font_size = 96
+text = "Level"
+
+[node name="Value" type="Label" parent="CenterContainer/VBoxContainer/Level"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_xkcup")
+theme_override_font_sizes/font_size = 96
+text = "1"
+
+[node name="Time" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 64
+alignment = 1
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/Time"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_xkcup")
+theme_override_font_sizes/font_size = 96
+text = "Time"
+
+[node name="Value" type="Label" parent="CenterContainer/VBoxContainer/Time"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_xkcup")
+theme_override_font_sizes/font_size = 96
+text = "00:11:00.000"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 160
+alignment = 1
+
+[node name="Letter" type="HBoxContainer" parent="CenterContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 64
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer/Letter"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_xkcup")
+theme_override_font_sizes/font_size = 96
+text = "Letter"
+
+[node name="Value" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer/Letter"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_xkcup")
+theme_override_font_sizes/font_size = 96
+text = "1"
+
+[node name="Health" type="HBoxContainer" parent="CenterContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 64
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer/Health"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_xkcup")
+theme_override_font_sizes/font_size = 96
+text = "Health"
+
+[node name="Value" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer/Health"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_xkcup")
+theme_override_font_sizes/font_size = 96
+text = "1"
+
+[node name="RetryBtn" type="Button" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_xkcup")
+theme_override_font_sizes/font_size = 64
+text = "Retry"
+script = ExtResource("2_b5luu")
+
+[node name="BackToMenuBtn" type="Button" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_xkcup")
+theme_override_font_sizes/font_size = 64
+text = "Back to Menu"
+script = ExtResource("3_b20kx")
+
+[connection signal="pressed" from="CenterContainer/VBoxContainer/RetryBtn" to="CenterContainer/VBoxContainer/RetryBtn" method="_on_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/BackToMenuBtn" to="CenterContainer/VBoxContainer/BackToMenuBtn" method="_on_pressed"]
