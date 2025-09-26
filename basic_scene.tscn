@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://3y1yfirmoqb5"]
+[gd_scene load_steps=23 format=3 uid="uid://3y1yfirmoqb5"]
 
 [ext_resource type="Script" uid="uid://bgyvlelyydjdx" path="res://scripts/Player.gd" id="1_2b24p"]
 [ext_resource type="Texture2D" uid="uid://crcjlyk0hi0iy" path="res://images/tiantian.png" id="2_r6pda"]
@@ -12,6 +12,7 @@
 [ext_resource type="Script" uid="uid://dhrtl5df6k7rn" path="res://scripts/Camera.gd" id="7_m0p7j"]
 [ext_resource type="Script" uid="uid://bi13ylbad4fyg" path="res://scripts/WorldBoundary.gd" id="8_2b24p"]
 [ext_resource type="Script" uid="uid://cr77jdmq78p1b" path="res://scripts/GUI_LetterBonus.gd" id="8_brn83"]
+[ext_resource type="Script" uid="uid://8835540nq8lr" path="res://scripts/CameraArea.gd" id="13_yljlq"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_cxlks"]
 radius = 62.0
@@ -38,45 +39,48 @@ size = Vector2(277, 68)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_c87ny"]
 size = Vector2(3615, 87)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k5p4p"]
+size = Vector2(2687.5, 1258)
+
 [node name="Node2D" type="Node2D"]
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="UI" type="CanvasLayer" parent="."]
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI"]
 offset_left = 32.0
 offset_top = 24.0
 offset_right = 832.0
 offset_bottom = 252.0
 theme_override_constants/separation = 28
 
-[node name="LetterContainer" type="HBoxContainer" parent="CanvasLayer/VBoxContainer"]
+[node name="LetterContainer" type="HBoxContainer" parent="UI/VBoxContainer"]
 custom_minimum_size = Vector2(800, 100)
 layout_mode = 2
 theme_override_constants/separation = 42
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/VBoxContainer/LetterContainer"]
+[node name="TextureRect" type="TextureRect" parent="UI/VBoxContainer/LetterContainer"]
 layout_mode = 2
 texture = ExtResource("4_alqpt")
 expand_mode = 3
 
-[node name="Value" type="Label" parent="CanvasLayer/VBoxContainer/LetterContainer"]
+[node name="Value" type="Label" parent="UI/VBoxContainer/LetterContainer"]
 layout_mode = 2
 theme = ExtResource("5_c87ny")
 text = "0"
 script = ExtResource("8_brn83")
 
-[node name="LifeContainer" type="HBoxContainer" parent="CanvasLayer/VBoxContainer"]
+[node name="LifeContainer" type="HBoxContainer" parent="UI/VBoxContainer"]
 custom_minimum_size = Vector2(800, 100)
 layout_direction = 2
 layout_mode = 2
 theme_override_constants/separation = 42
 
-[node name="Icon" type="TextureRect" parent="CanvasLayer/VBoxContainer/LifeContainer"]
+[node name="Icon" type="TextureRect" parent="UI/VBoxContainer/LifeContainer"]
 layout_mode = 2
 texture = ExtResource("2_r6pda")
 expand_mode = 3
 
-[node name="Value" type="Label" parent="CanvasLayer/VBoxContainer/LifeContainer"]
+[node name="Value" type="Label" parent="UI/VBoxContainer/LifeContainer"]
 layout_mode = 2
 theme = ExtResource("5_c87ny")
 text = "5"
@@ -86,14 +90,13 @@ script = ExtResource("7_c87ny")
 [node name="GameState" type="Node2D" parent="."]
 script = ExtResource("7_k5p4p")
 
-[node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("target")]
+[node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("target") groups=["camera"]]
 script = ExtResource("7_m0p7j")
 target = NodePath("../Player")
 map_max_x = 4000.0
 map_min_y = -3000.0
-height_threshold = 480.0
 
-[node name="Player" type="CharacterBody2D" parent="."]
+[node name="Player" type="CharacterBody2D" parent="." groups=["player"]]
 position = Vector2(168, 894)
 script = ExtResource("1_2b24p")
 JUMP_VELOCITY = -600.0
@@ -106,99 +109,110 @@ position = Vector2(2, 2)
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_cxlks")
 
-[node name="Floor" type="StaticBody2D" parent="."]
-position = Vector2(144, 1035)
+[node name="Map" type="Node2D" parent="."]
 
-[node name="Sprite2D" type="Sprite2D" parent="Floor"]
+[node name="Floor" type="StaticBody2D" parent="Map"]
+position = Vector2(2378, 375)
+
+[node name="Sprite2D" type="Sprite2D" parent="Map/Floor"]
 texture = ExtResource("4_m0p7j")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/Floor"]
 position = Vector2(3.5, -2.5)
 shape = SubResource("RectangleShape2D_r4pny")
 
-[node name="BounceFloor" type="StaticBody2D" parent="."]
+[node name="Floor2" type="StaticBody2D" parent="Map"]
+position = Vector2(144, 1035)
+
+[node name="Sprite2D" type="Sprite2D" parent="Map/Floor2"]
+texture = ExtResource("4_m0p7j")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/Floor2"]
+position = Vector2(3.5, -2.5)
+shape = SubResource("RectangleShape2D_r4pny")
+
+[node name="BounceFloor" type="StaticBody2D" parent="Map"]
 position = Vector2(865, 869)
 constant_linear_velocity = Vector2(0, -300)
 
-[node name="Sprite2D" type="Sprite2D" parent="BounceFloor"]
+[node name="Sprite2D" type="Sprite2D" parent="Map/BounceFloor"]
 modulate = Color(0.90646636, 0.79660636, 0.380078, 1)
 texture = ExtResource("4_m0p7j")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BounceFloor"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/BounceFloor"]
 position = Vector2(2.5, -2)
 shape = SubResource("RectangleShape2D_5f4ac")
 
-[node name="FragileFloor" type="Area2D" parent="."]
+[node name="FragileFloor" type="Area2D" parent="Map"]
 position = Vector2(508, 970)
 script = ExtResource("6_5f4ac")
 
-[node name="StaticBody2D" type="StaticBody2D" parent="FragileFloor"]
+[node name="StaticBody2D" type="StaticBody2D" parent="Map/FragileFloor"]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="FragileFloor/StaticBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/FragileFloor/StaticBody2D"]
 position = Vector2(3, -2)
 shape = SubResource("RectangleShape2D_2b24p")
 
-[node name="Sprite2D" type="Sprite2D" parent="FragileFloor"]
+[node name="Sprite2D" type="Sprite2D" parent="Map/FragileFloor"]
 modulate = Color(0.9859453, 0.8676859, 0.8142594, 1)
 texture = ExtResource("4_m0p7j")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="FragileFloor"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/FragileFloor"]
 position = Vector2(3, -2)
 shape = SubResource("RectangleShape2D_cxlks")
 
-[node name="DisappearTimer" type="Timer" parent="FragileFloor"]
+[node name="DisappearTimer" type="Timer" parent="Map/FragileFloor"]
 one_shot = true
 ignore_time_scale = true
 
-[node name="AppearTimer" type="Timer" parent="FragileFloor"]
+[node name="AppearTimer" type="Timer" parent="Map/FragileFloor"]
 wait_time = 3.0
 
-[node name="MoveableFloor" type="AnimatableBody2D" parent="."]
+[node name="MoveableFloor" type="AnimatableBody2D" parent="Map"]
 position = Vector2(1197, 715)
 script = ExtResource("7_cxlks")
 moveToEndSeconds = 3.0
 moveToStartSeconds = 3.0
 
-[node name="Sprite2D" type="Sprite2D" parent="MoveableFloor"]
+[node name="Sprite2D" type="Sprite2D" parent="Map/MoveableFloor"]
 modulate = Color(0.75105435, 0.742458, 0.89835095, 1)
 texture = ExtResource("4_m0p7j")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="MoveableFloor"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/MoveableFloor"]
 position = Vector2(1.5, -1)
 shape = SubResource("RectangleShape2D_alqpt")
 
-[node name="StartPoint" type="Marker2D" parent="MoveableFloor"]
+[node name="StartPoint" type="Marker2D" parent="Map/MoveableFloor"]
 
-[node name="EndPoint" type="Marker2D" parent="MoveableFloor"]
+[node name="EndPoint" type="Marker2D" parent="Map/MoveableFloor"]
 position = Vector2(799, -410)
 
-[node name="Area2D" type="Area2D" parent="MoveableFloor"]
+[node name="Area2D" type="Area2D" parent="Map/MoveableFloor"]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="MoveableFloor/Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/MoveableFloor/Area2D"]
 position = Vector2(1.5, -2)
 shape = SubResource("RectangleShape2D_r6pda")
 
-[node name="WorldBoundary" type="Area2D" parent="."]
+[node name="WorldBoundary" type="Area2D" parent="Map"]
 position = Vector2(19, 1139)
 script = ExtResource("8_2b24p")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldBoundary"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/WorldBoundary"]
 position = Vector2(1725.5, 33.5)
 shape = SubResource("RectangleShape2D_c87ny")
 
-[node name="Groud" type="Node2D" parent="."]
+[node name="CameraAreas" type="Node2D" parent="."]
 
-[node name="Floor" type="StaticBody2D" parent="Groud"]
-position = Vector2(2378, 375)
+[node name="Area2D" type="Area2D" parent="CameraAreas" groups=["camera_areas"]]
+position = Vector2(377, 27)
+script = ExtResource("13_yljlq")
+camera_mode = 4
 
-[node name="Sprite2D" type="Sprite2D" parent="Groud/Floor"]
-texture = ExtResource("4_m0p7j")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CameraAreas/Area2D"]
+position = Vector2(1280, 562)
+shape = SubResource("RectangleShape2D_k5p4p")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Groud/Floor"]
-position = Vector2(3.5, -2.5)
-shape = SubResource("RectangleShape2D_r4pny")
-
-[connection signal="body_entered" from="FragileFloor" to="FragileFloor" method="_on_body_entered"]
-[connection signal="timeout" from="FragileFloor/DisappearTimer" to="FragileFloor" method="_on_disappear_timer_timeout"]
-[connection signal="timeout" from="FragileFloor/AppearTimer" to="FragileFloor" method="_on_appear_timer_timeout"]
-[connection signal="body_entered" from="WorldBoundary" to="WorldBoundary" method="_on_body_entered"]
+[connection signal="body_entered" from="Map/FragileFloor" to="Map/FragileFloor" method="_on_body_entered"]
+[connection signal="timeout" from="Map/FragileFloor/DisappearTimer" to="Map/FragileFloor" method="_on_disappear_timer_timeout"]
+[connection signal="timeout" from="Map/FragileFloor/AppearTimer" to="Map/FragileFloor" method="_on_appear_timer_timeout"]
+[connection signal="body_entered" from="Map/WorldBoundary" to="Map/WorldBoundary" method="_on_body_entered"]
