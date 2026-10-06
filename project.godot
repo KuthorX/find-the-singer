@@ -20,6 +20,7 @@ config/icon="uid://bcr337fdf1guk"
 
 GameState="*res://scripts/GameState.gd"
 CameraModes="*res://scripts/CameraModes.gd"
+Localization="*res://scripts/Localization.gd"
 
 [display]
 
@@ -27,6 +28,10 @@ window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/stretch/mode="viewport"
 window/stretch/scale_mode="integer"
+
+[internationalization]
+
+locale/translations=PackedStringArray("res://i18n/translations.zh.translation", "res://i18n/translations.en.translation")
 
 [input]
 

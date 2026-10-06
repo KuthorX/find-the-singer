@@ -1,0 +1,29 @@
+keys,zh,en
+GAME_TITLE,寻找歌姬,Find The Singer
+BTN_START,开始游戏,Start
+BTN_EXIT,退出,Exit
+GAME_OVER,游戏结束……,Game Over...
+BTN_RETRY,再试一次,Retry
+BTN_BACK_TO_MENU,返回主菜单,Back to Menu
+LEVEL_COMPLETE,关卡完成！,Level Complete!
+LABEL_LEVEL,关卡,Level
+LABEL_TIME,用时,Time
+LABEL_LETTERS,信件,Letters
+LABEL_HEALTH,生命,Health
+HINT_CONTROLS,"移动：左 / 右方向键
+奔跑：Shift
+跳跃：空格","Move: Left / Right Arrow
+Run: Shift
+Jump: Space"
+HINT_FRAGILE,小心！这块平台很脆弱！,Watch out! It's FRAGILE!
+HINT_JUMP_HIGHER,你可以跳得更高！,You can jump HIGHER!
+HINT_COLLECT_LETTERS,尽可能多地收集信件！,Collect as many LETTERS as you can!
+HINT_SLIPPERY,这里有点滑……,It's a little slippery...
+HINT_CHECKPOINT,"这是存档点！
+碰到它之后，你会在这里重生！
+（希望用不上，哈哈）","This is a CHECKPOINT!
+Touch it and you'll RESPAWN here!
+(Hopefully you won't need to, haha)"
+HINT_ENDPOINT,"这里就是终点！
+恭喜通关！","Here is the ENDPOINT!
+CONGRATULATIONS!"

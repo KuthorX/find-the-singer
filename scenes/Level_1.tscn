@@ -407,9 +407,7 @@ offset_right = 711.0
 offset_bottom = 785.0
 theme = ExtResource("2_owcbc")
 theme_override_font_sizes/font_size = 36
-text = "Move: Left Arrow / Right Arrow
-Run: Shift
-Jump: Space"
+text = "HINT_CONTROLS"
 vertical_alignment = 1
 
 [node name="StaticFloor6" type="StaticBody2D" parent="Map"]
@@ -497,7 +495,7 @@ offset_right = 949.0
 offset_bottom = 1044.0
 theme = ExtResource("2_owcbc")
 theme_override_font_sizes/font_size = 36
-text = " Watch Out! It's FRAGILE !"
+text = "HINT_FRAGILE"
 vertical_alignment = 1
 
 [node name="Hint3" type="Label" parent="Map"]
@@ -507,7 +505,7 @@ offset_right = 1316.0
 offset_bottom = 945.0
 theme = ExtResource("2_owcbc")
 theme_override_font_sizes/font_size = 36
-text = "You can jump HIGHER !"
+text = "HINT_JUMP_HIGHER"
 vertical_alignment = 1
 
 [node name="Hint4" type="Label" parent="Map"]
@@ -517,7 +515,7 @@ offset_right = 1547.0
 offset_bottom = 576.0
 theme = ExtResource("2_owcbc")
 theme_override_font_sizes/font_size = 36
-text = "Collect as more LETTERS as you can !"
+text = "HINT_COLLECT_LETTERS"
 vertical_alignment = 1
 
 [node name="Letter9" type="Area2D" parent="Map"]
@@ -539,7 +537,7 @@ offset_right = 2050.0
 offset_bottom = -1242.0
 theme = ExtResource("2_owcbc")
 theme_override_font_sizes/font_size = 36
-text = "It's a liitle slippery ..."
+text = "HINT_SLIPPERY"
 vertical_alignment = 1
 
 [node name="StaticFloor10" type="StaticBody2D" parent="Map"]
@@ -591,9 +589,7 @@ offset_right = 2713.0
 offset_bottom = -1502.0
 theme = ExtResource("2_owcbc")
 theme_override_font_sizes/font_size = 36
-text = "This is a CHECKPOINT !
-After you touch this, you will REBORN to here ! 
-( hoped that won't happened haha )"
+text = "HINT_CHECKPOINT"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -628,8 +624,7 @@ offset_right = -1232.0
 offset_bottom = -2226.0
 theme = ExtResource("2_owcbc")
 theme_override_font_sizes/font_size = 36
-text = "Here is the ENDPOINT
-! CONGRATULATIONS !"
+text = "HINT_ENDPOINT"
 horizontal_alignment = 1
 vertical_alignment = 1
 

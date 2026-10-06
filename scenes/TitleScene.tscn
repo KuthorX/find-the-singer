@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://bu3b4dlciigy6"]
+[gd_scene load_steps=5 format=3 uid="uid://bu3b4dlciigy6"]
 
 [ext_resource type="FontFile" uid="uid://cahop575b4dd7" path="res://fonts/EmilysCandy-Regular.ttf" id="1_7u1s4"]
 [ext_resource type="Script" uid="uid://2bjonim448hk" path="res://scripts/TitleScene/StartBtn.gd" id="2_n8eu1"]
 [ext_resource type="Script" uid="uid://51y2aadv4k8t" path="res://scripts/TitleScene/EndBtn.gd" id="3_n8eu1"]
+[ext_resource type="Script" uid="uid://c7amaqp2tro5n" path="res://scripts/TitleScene/LanguageBtn.gd" id="4_lang"]
 
 [node name="TitleScene" type="Node2D"]
 
@@ -22,21 +23,33 @@ alignment = 1
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_7u1s4")
 theme_override_font_sizes/font_size = 128
-text = "Find The Singer"
+text = "GAME_TITLE"
 
 [node name="StartBtn" type="Button" parent="CanvasLayer/CenterContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_7u1s4")
 theme_override_font_sizes/font_size = 64
-text = "Start"
+text = "BTN_START"
 script = ExtResource("2_n8eu1")
 
 [node name="ExitBtn" type="Button" parent="CanvasLayer/CenterContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_7u1s4")
 theme_override_font_sizes/font_size = 64
-text = "Exit"
+text = "BTN_EXIT"
 script = ExtResource("3_n8eu1")
+
+[node name="LanguageBtn" type="Button" parent="CanvasLayer"]
+auto_translate_mode = 2
+offset_left = 1600.0
+offset_top = 32.0
+offset_right = 1888.0
+offset_bottom = 120.0
+theme_override_fonts/font = ExtResource("1_7u1s4")
+theme_override_font_sizes/font_size = 48
+text = "中文 / EN"
+script = ExtResource("4_lang")
 
 [connection signal="pressed" from="CanvasLayer/CenterContainer/VBoxContainer/StartBtn" to="CanvasLayer/CenterContainer/VBoxContainer/StartBtn" method="_on_pressed"]
 [connection signal="pressed" from="CanvasLayer/CenterContainer/VBoxContainer/ExitBtn" to="CanvasLayer/CenterContainer/VBoxContainer/ExitBtn" method="_on_pressed"]
+[connection signal="pressed" from="CanvasLayer/LanguageBtn" to="CanvasLayer/LanguageBtn" method="_on_pressed"]

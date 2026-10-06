@@ -22,20 +22,20 @@ alignment = 1
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_vuicl")
 theme_override_font_sizes/font_size = 128
-text = "Game Over..."
+text = "GAME_OVER"
 
 [node name="RetryBtn" type="Button" parent="CanvasLayer/CenterContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_vuicl")
 theme_override_font_sizes/font_size = 64
-text = "Retry"
+text = "BTN_RETRY"
 script = ExtResource("2_vuicl")
 
 [node name="BackToMenuBtn" type="Button" parent="CanvasLayer/CenterContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_vuicl")
 theme_override_font_sizes/font_size = 64
-text = "Back to Menu"
+text = "BTN_BACK_TO_MENU"
 script = ExtResource("3_vuicl")
 
 [connection signal="pressed" from="CanvasLayer/CenterContainer/VBoxContainer/RetryBtn" to="CanvasLayer/CenterContainer/VBoxContainer/RetryBtn" method="_on_pressed"]

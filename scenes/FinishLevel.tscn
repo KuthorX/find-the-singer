@@ -22,7 +22,7 @@ alignment = 1
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_xkcup")
 theme_override_font_sizes/font_size = 128
-text = "Level Complete !"
+text = "LEVEL_COMPLETE"
 horizontal_alignment = 1
 
 [node name="Level" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
@@ -34,7 +34,7 @@ alignment = 1
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_xkcup")
 theme_override_font_sizes/font_size = 96
-text = "Level"
+text = "LABEL_LEVEL"
 
 [node name="Value" type="Label" parent="CenterContainer/VBoxContainer/Level"]
 layout_mode = 2
@@ -51,7 +51,7 @@ alignment = 1
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_xkcup")
 theme_override_font_sizes/font_size = 96
-text = "Time"
+text = "LABEL_TIME"
 
 [node name="Value" type="Label" parent="CenterContainer/VBoxContainer/Time"]
 layout_mode = 2
@@ -72,7 +72,7 @@ theme_override_constants/separation = 64
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_xkcup")
 theme_override_font_sizes/font_size = 96
-text = "Letter"
+text = "LABEL_LETTERS"
 
 [node name="Value" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer/Letter"]
 layout_mode = 2
@@ -88,7 +88,7 @@ theme_override_constants/separation = 64
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_xkcup")
 theme_override_font_sizes/font_size = 96
-text = "Health"
+text = "LABEL_HEALTH"
 
 [node name="Value" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer/Health"]
 layout_mode = 2
@@ -100,14 +100,14 @@ text = "1"
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_xkcup")
 theme_override_font_sizes/font_size = 64
-text = "Retry"
+text = "BTN_RETRY"
 script = ExtResource("2_b5luu")
 
 [node name="BackToMenuBtn" type="Button" parent="CenterContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_xkcup")
 theme_override_font_sizes/font_size = 64
-text = "Back to Menu"
+text = "BTN_BACK_TO_MENU"
 script = ExtResource("3_b20kx")
 
 [connection signal="pressed" from="CenterContainer/VBoxContainer/RetryBtn" to="CenterContainer/VBoxContainer/RetryBtn" method="_on_pressed"]
