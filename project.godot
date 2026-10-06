@@ -14,7 +14,9 @@ config/name="find-the-singer"
 config/version="0.0.1"
 run/main_scene="uid://bu3b4dlciigy6"
 config/features=PackedStringArray("4.5", "Forward Plus")
-config/icon="uid://bcr337fdf1guk"
+config/icon="res://images/icon.png"
+boot_splash/bg_color=Color(0.957, 0.933, 0.882, 1)
+boot_splash/show_image=false
 
 [autoload]
 

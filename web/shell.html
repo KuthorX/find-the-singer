@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+		<meta name="theme-color" content="#F4EEE1">
+		<title>$GODOT_PROJECT_NAME</title>
+		<style>
+/* Boot screen in the "staff-paper guestbook" art direction (docs/art-direction.md):
+   cream manuscript paper, gel-ink navy, Tianyi blue only on the hero's flag,
+   red pen only for errors. No boxes, gradients or shadows. */
+:root {
+	--paper: #F4EEE1;
+	--ink: #1E2246;
+	--blue: #66CCFF;
+	--red: #D64034;
+	--hand: 'Bradley Hand', 'Segoe Print', 'Kaiti SC', 'STKaiti', 'KaiTi', 'Comic Sans MS', cursive;
+}
+
+html, body, #canvas {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+html, body {
+	width: 100%;
+	height: 100%;
+	background-color: var(--paper);
+}
+
+body {
+	color: var(--ink);
+	overflow: hidden;
+	touch-action: none;
+}
+
+#canvas {
+	display: block;
+}
+
+#canvas:focus {
+	outline: none;
+}
+
+#status {
+	position: absolute;
+	inset: 0;
+	background-color: var(--paper);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+	padding-left: 10vw;
+	font-family: var(--hand);
+	z-index: 1;
+	transition: opacity 0.25s ease-out;
+}
+
+#status.done {
+	opacity: 0;
+	pointer-events: none;
+}
+
+#boot {
+	width: min(720px, 80vw);
+}
+
+#boot-title {
+	margin: 0;
+	font-size: clamp(28px, 5vw, 48px);
+	font-weight: 700;
+	color: var(--ink);
+}
+
+#boot-subtitle {
+	margin: 2px 0 28px;
+	font-size: clamp(18px, 2.4vw, 24px);
+	color: var(--ink);
+	opacity: 0.75;
+}
+
+/* Progress bar: one hand-ruled staff. An ink stroke is written along the middle
+   line and the hero note walks toward the final barline. */
+#boot-bar {
+	position: relative;
+	height: 64px;
+	margin: 0 0 10px;
+}
+
+#boot-staff {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+}
+
+#boot-fill {
+	position: absolute;
+	top: 30px;
+	left: 0;
+	width: 0;
+	height: 4px;
+	background: var(--ink);
+	border-radius: 2px;
+	transition: width 0.2s linear;
+}
+
+#boot-ball {
+	position: absolute;
+	top: -10px;
+	left: 0;
+	width: 30px;
+	height: 52px;
+	margin-left: -13px;
+	transition: left 0.2s linear;
+}
+
+#boot-bar.indeterminate #boot-fill {
+	width: 0 !important;
+}
+
+#boot-bar.indeterminate #boot-ball {
+	animation: sweep 1.8s ease-in-out infinite alternate;
+}
+
+@keyframes sweep {
+	from { left: 0; }
+	to { left: calc(100% - 24px); }
+}
+
+#boot-row {
+	display: flex;
+	gap: 18px;
+	align-items: baseline;
+	font-size: 22px;
+	color: var(--ink);
+}
+
+#boot-pct, #boot-mb {
+	font-family: ui-monospace, Menlo, Consolas, monospace;
+	font-size: 14px;
+	font-variant-numeric: tabular-nums;
+	opacity: 0.8;
+}
+
+#boot-notice {
+	display: none;
+	margin-top: 8px;
+	color: var(--red);
+	font-size: 20px;
+	line-height: 1.4;
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+#boot-notice b {
+	font-size: 26px;
+}
+
+#status.error #boot-bar, #status.error #boot-row {
+	display: none;
+}
+
+#status.error #boot-notice {
+	display: block;
+}
+		</style>
+		$GODOT_HEAD_INCLUDE
+	</head>
+	<body>
+		<canvas id="canvas">
+			Your browser does not support the canvas tag.
+		</canvas>
+
+		<noscript>
+			Your browser does not support JavaScript.
+		</noscript>
+
+		<div id="status">
+			<div id="boot">
+				<h1 id="boot-title">Find The Singer</h1>
+				<p id="boot-subtitle">寻找歌姬</p>
+				<div id="boot-bar" class="indeterminate">
+					<svg id="boot-staff" viewBox="0 0 720 64" preserveAspectRatio="none" aria-hidden="true">
+						<g stroke="#1E2246" stroke-width="1.2" vector-effect="non-scaling-stroke" opacity="0.55">
+							<line x1="0" y1="8" x2="720" y2="8" vector-effect="non-scaling-stroke"/>
+							<line x1="0" y1="20" x2="720" y2="20" vector-effect="non-scaling-stroke"/>
+							<line x1="0" y1="32" x2="720" y2="32" vector-effect="non-scaling-stroke"/>
+							<line x1="0" y1="44" x2="720" y2="44" vector-effect="non-scaling-stroke"/>
+							<line x1="0" y1="56" x2="720" y2="56" vector-effect="non-scaling-stroke"/>
+						</g>
+						<line x1="709" y1="8" x2="709" y2="56" stroke="#1E2246" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+						<line x1="716" y1="8" x2="716" y2="56" stroke="#1E2246" stroke-width="5" vector-effect="non-scaling-stroke"/>
+					</svg>
+					<div id="boot-fill"></div>
+					<!-- The hero: an ink note head with a Tianyi-blue flag. -->
+					<svg id="boot-ball" viewBox="0 0 30 52" aria-hidden="true">
+						<path d="M21 4 C23 10 29 13 28 22 C26 17 23 15 21 15 Z" fill="#66CCFF" stroke="#1E2246" stroke-width="1.2" stroke-linejoin="round"/>
+						<path d="M21 3 L21 41" stroke="#1E2246" stroke-width="2.4" stroke-linecap="round"/>
+						<ellipse cx="13" cy="42" rx="9" ry="6.5" transform="rotate(-22 13 42)" fill="#1E2246"/>
+					</svg>
+				</div>
+				<div id="boot-row">
+					<span id="boot-label">Loading…</span>
+					<span><span id="boot-pct"></span> <span id="boot-mb"></span></span>
+				</div>
+				<div id="boot-notice" role="alert"></div>
+			</div>
+		</div>
+
+		<script>
+// Runs before the engine script downloads so the loader text is correct from the first paint.
+const BOOT_ZH = /^zh\b/i.test(navigator.language || '');
+const BOOT_TEXT = BOOT_ZH ? {
+	loading: '加载中…',
+	starting: '启动中…',
+	error: '加载失败',
+	retry: '请刷新页面重试。',
+} : {
+	loading: 'Loading…',
+	starting: 'Starting…',
+	error: 'Failed to load',
+	retry: 'Please reload the page to try again.',
+};
+document.documentElement.lang = BOOT_ZH ? 'zh' : 'en';
+document.getElementById('boot-label').textContent = BOOT_TEXT.loading;
+		</script>
+		<script src="$GODOT_URL"></script>
+		<script>
+const GODOT_CONFIG = $GODOT_CONFIG;
+const GODOT_THREADS_ENABLED = $GODOT_THREADS_ENABLED;
+const engine = new Engine(GODOT_CONFIG);
+
+(function () {
+	const MB = 1024 * 1024;
+	const statusOverlay = document.getElementById('status');
+	const bar = document.getElementById('boot-bar');
+	const fill = document.getElementById('boot-fill');
+	const ball = document.getElementById('boot-ball');
+	const label = document.getElementById('boot-label');
+	const pct = document.getElementById('boot-pct');
+	const mb = document.getElementById('boot-mb');
+	const notice = document.getElementById('boot-notice');
+
+	let initializing = true;
+
+	function hideStatus() {
+		if (!initializing) {
+			return;
+		}
+		initializing = false;
+		statusOverlay.classList.add('done');
+		setTimeout(() => statusOverlay.remove(), 300);
+	}
+
+	function setProgress(current, total) {
+		if (!initializing) {
+			return;
+		}
+		if (current > 0 && total > 0) {
+			const ratio = Math.min(current / total, 1);
+			bar.classList.remove('indeterminate');
+			fill.style.width = `${(ratio * 100).toFixed(1)}%`;
+			ball.style.left = fill.style.width;
+			pct.textContent = `${Math.floor(ratio * 100)}%`;
+			mb.textContent = `${(current / MB).toFixed(1)} / ${(total / MB).toFixed(1)} MB`;
+			label.textContent = ratio >= 1 ? BOOT_TEXT.starting : BOOT_TEXT.loading;
+		} else {
+			// Size unknown (no Content-Length, e.g. compressed transfer): sweep and show bytes only.
+			bar.classList.add('indeterminate');
+			pct.textContent = '';
+			mb.textContent = current > 0 ? `${(current / MB).toFixed(1)} MB` : '';
+		}
+	}
+
+	function displayFailureNotice(err) {
+		console.error(err);
+		let message = 'An unknown error occurred.';
+		if (err instanceof Error) {
+			message = err.message;
+		} else if (typeof err === 'string') {
+			message = err;
+		}
+		notice.textContent = '';
+		const head = document.createElement('b');
+		head.textContent = BOOT_TEXT.error;
+		notice.appendChild(head);
+		notice.appendChild(document.createTextNode(`\n${message}\n\n${BOOT_TEXT.retry}`));
+		statusOverlay.classList.add('error');
+		initializing = false;
+	}
+
+	const missing = Engine.getMissingFeatures({
+		threads: GODOT_THREADS_ENABLED,
+	});
+
+	if (missing.length !== 0) {
+		if (GODOT_CONFIG['serviceWorker'] && GODOT_CONFIG['ensureCrossOriginIsolationHeaders'] && 'serviceWorker' in navigator) {
+			let serviceWorkerRegistrationPromise;
+			try {
+				serviceWorkerRegistrationPromise = navigator.serviceWorker.getRegistration();
+			} catch (err) {
+				serviceWorkerRegistrationPromise = Promise.reject(new Error('Service worker registration failed.'));
+			}
+			// There's a chance that installing the service worker would fix the issue
+			Promise.race([
+				serviceWorkerRegistrationPromise.then((registration) => {
+					if (registration != null) {
+						return Promise.reject(new Error('Service worker already exists.'));
+					}
+					return registration;
+				}).then(() => engine.installServiceWorker()),
+				// For some reason, `getRegistration()` can stall
+				new Promise((resolve) => {
+					setTimeout(() => resolve(), 2000);
+				}),
+			]).then(() => {
+				// Reload if there was no error.
+				window.location.reload();
+			}).catch((err) => {
+				console.error('Error while registering service worker:', err);
+			});
+		} else {
+			// Display the message as usual
+			const missingMsg = 'The following features required to run this game in the browser are missing:\n';
+			displayFailureNotice(missingMsg + missing.join('\n'));
+		}
+	} else {
+		setProgress(0, 0);
+		engine.startGame({
+			'onProgress': setProgress,
+		}).then(hideStatus, displayFailureNotice);
+	}
+}());
+		</script>
+	</body>
+</html>
