@@ -1,0 +1,66 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Texture2D" uid="uid://bvecpgnpho3yu" path="res://images/paper_plain.png" id="1_paper"]
+[ext_resource type="Texture2D" uid="uid://u6b0me31op4q" path="res://images/hole.png" id="2_hole"]
+[ext_resource type="Texture2D" uid="uid://3p7r52iiq3ur" path="res://images/staff_long.png" id="3_staff"]
+[ext_resource type="Texture2D" uid="uid://bm7kd0ifws0ug" path="res://images/clef.png" id="4_clef"]
+
+[node name="Page" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 2
+
+[node name="Paper" type="TextureRect" parent="."]
+texture_repeat = 2
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 2
+texture = ExtResource("1_paper")
+stretch_mode = 1
+
+[node name="Hole1" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 196.0
+offset_right = 90.0
+offset_bottom = 268.0
+mouse_filter = 2
+texture = ExtResource("2_hole")
+
+[node name="Hole2" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 504.0
+offset_right = 90.0
+offset_bottom = 576.0
+mouse_filter = 2
+texture = ExtResource("2_hole")
+
+[node name="Hole3" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 812.0
+offset_right = 90.0
+offset_bottom = 884.0
+mouse_filter = 2
+texture = ExtResource("2_hole")
+
+[node name="Staff" type="TextureRect" parent="."]
+layout_mode = 0
+offset_top = 610.0
+offset_right = 1920.0
+offset_bottom = 810.0
+mouse_filter = 2
+texture = ExtResource("3_staff")
+
+[node name="Clef" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 120.0
+offset_top = 580.0
+offset_right = 260.0
+offset_bottom = 840.0
+mouse_filter = 2
+texture = ExtResource("4_clef")

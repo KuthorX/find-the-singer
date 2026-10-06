@@ -2,6 +2,9 @@ extends Button
 
 var next_scene = preload("res://scenes/Level_1.tscn")
 
+func _ready() -> void:
+	grab_focus()
+
 func _on_pressed() -> void:
 	var game_state: GameState = get_node("/root/GameState")
 	game_state.init_level_state()

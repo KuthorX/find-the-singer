@@ -1,8 +1,7 @@
-[gd_scene load_steps=32 format=3 uid="uid://3y1yfirmoqb5"]
+[gd_scene load_steps=37 format=3 uid="uid://3y1yfirmoqb5"]
 
 [ext_resource type="Texture2D" uid="uid://c4nq0y7qb2kk0" path="res://images/letter.png" id="1_5viah"]
 [ext_resource type="Texture2D" uid="uid://cuyhnwufhfd5f" path="res://images/clock.png" id="1_owcbc"]
-[ext_resource type="Theme" uid="uid://df41yfnnnm3ge" path="res://fonts/theme/GUI_Number.tres" id="2_owcbc"]
 [ext_resource type="Script" uid="uid://cr77jdmq78p1b" path="res://scripts/GUI_Letter.gd" id="3_8ey7k"]
 [ext_resource type="Script" uid="uid://bprkulr766ce2" path="res://scripts/GUI_Clock.gd" id="3_spmks"]
 [ext_resource type="Texture2D" uid="uid://crcjlyk0hi0iy" path="res://images/tiantian.png" id="4_spmks"]
@@ -10,7 +9,13 @@
 [ext_resource type="Script" uid="uid://da82rbkomc52u" path="res://scripts/GameState.gd" id="6_2qcc1"]
 [ext_resource type="Script" uid="uid://dhrtl5df6k7rn" path="res://scripts/Camera.gd" id="7_op4va"]
 [ext_resource type="Script" uid="uid://bgyvlelyydjdx" path="res://scripts/Player.gd" id="8_g1p3b"]
-[ext_resource type="Texture2D" uid="uid://dvm63t7ipvhxa" path="res://images/plat.png" id="9_71ekq"]
+[ext_resource type="Texture2D" uid="uid://1s4er5so3gcu" path="res://images/plat_measure.png" id="9_measure"]
+[ext_resource type="Texture2D" uid="uid://celr2eyyhoggq" path="res://images/plat_fragile.png" id="9_fragile"]
+[ext_resource type="Texture2D" uid="uid://de2hxow0e77a8" path="res://images/plat_repeat.png" id="9_repeat"]
+[ext_resource type="Texture2D" uid="uid://b18u5mn13qle" path="res://images/plat_spring.png" id="9_spring"]
+[ext_resource type="Texture2D" uid="uid://cg5wdna1jvr47" path="res://images/plat_gliss.png" id="9_gliss"]
+[ext_resource type="Texture2D" uid="uid://bvecpgnpho3yu" path="res://images/paper_plain.png" id="19_paper"]
+[ext_resource type="Texture2D" uid="uid://cvx3n5xvmto0d" path="res://images/icon_life.png" id="20_life"]
 [ext_resource type="Script" uid="uid://c3vq4ujdi8iu2" path="res://scripts/FragileFloor.gd" id="10_nqobt"]
 [ext_resource type="Script" uid="uid://wwij6i6vhrtm" path="res://scripts/MoveableFloor.gd" id="11_gn1td"]
 [ext_resource type="Script" uid="uid://bi13ylbad4fyg" path="res://scripts/WorldBoundary.gd" id="12_3qd3g"]
@@ -18,7 +23,7 @@
 [ext_resource type="Script" uid="uid://gcl107yy7edn" path="res://scripts/Letter.gd" id="14_wf7sx"]
 [ext_resource type="Script" uid="uid://cknw6v8ijeppf" path="res://scripts/Checkpoint.gd" id="16_6ho6w"]
 [ext_resource type="Texture2D" uid="uid://elc2kt1jk0aj" path="res://images/checkpoint.png" id="16_spmks"]
-[ext_resource type="Texture2D" uid="uid://bcr337fdf1guk" path="res://images/ElementSource.png" id="18_2qcc1"]
+[ext_resource type="Texture2D" uid="uid://dgcdmvd0662lj" path="res://images/endpoint.png" id="18_2qcc1"]
 [ext_resource type="Script" uid="uid://bt26pxmsqig5o" path="res://scripts/EndPoint.gd" id="18_op4va"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_cxlks"]
@@ -50,73 +55,72 @@ size = Vector2(277, 68)
 size = Vector2(198.57126, 129)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_op4va"]
-size = Vector2(3109, 1999)
+size = Vector2(249, 160)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k5p4p"]
 size = Vector2(2687.5, 1258)
 
 [node name="Level_1" type="Node2D"]
 
+[node name="Paper" type="Sprite2D" parent="."]
+z_index = -10
+texture_repeat = 2
+position = Vector2(500, -500)
+texture = ExtResource("19_paper")
+region_enabled = true
+region_rect = Rect2(0, 0, 9000, 8400)
+
 [node name="UI" type="CanvasLayer" parent="."]
 
-[node name="ClockContainer" type="HBoxContainer" parent="UI"]
-custom_minimum_size = Vector2(800, 100)
-offset_left = 32.0
-offset_top = 24.0
-offset_right = 832.0
+[node name="HUD" type="HBoxContainer" parent="UI"]
+offset_left = 56.0
+offset_top = 28.0
+offset_right = 1200.0
 offset_bottom = 124.0
-theme_override_constants/separation = 34
+theme_override_constants/separation = 20
 
-[node name="TextureRect" type="TextureRect" parent="UI/ClockContainer"]
+[node name="ClockIcon" type="TextureRect" parent="UI/HUD"]
+custom_minimum_size = Vector2(72, 72)
 layout_mode = 2
+size_flags_vertical = 4
 texture = ExtResource("1_owcbc")
-expand_mode = 3
+expand_mode = 1
+stretch_mode = 5
 
-[node name="Value" type="Label" parent="UI/ClockContainer"]
+[node name="ClockValue" type="Label" parent="UI/HUD"]
+custom_minimum_size = Vector2(330, 0)
 layout_mode = 2
-theme = ExtResource("2_owcbc")
-text = "0"
+theme_type_variation = &"HudLabel"
+text = "00:00:00.000"
 script = ExtResource("3_spmks")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI"]
-offset_left = 39.0
-offset_top = 149.0
-offset_right = 839.0
-offset_bottom = 377.0
-theme_override_constants/separation = 28
-
-[node name="LetterContainer" type="HBoxContainer" parent="UI/VBoxContainer"]
-custom_minimum_size = Vector2(800, 90)
+[node name="LetterIcon" type="TextureRect" parent="UI/HUD"]
+custom_minimum_size = Vector2(96, 72)
 layout_mode = 2
-theme_override_constants/separation = 42
-
-[node name="TextureRect" type="TextureRect" parent="UI/VBoxContainer/LetterContainer"]
-layout_mode = 2
+size_flags_vertical = 4
 texture = ExtResource("1_5viah")
-expand_mode = 3
+expand_mode = 1
+stretch_mode = 5
 
-[node name="Value" type="Label" parent="UI/VBoxContainer/LetterContainer"]
+[node name="LetterValue" type="Label" parent="UI/HUD"]
+custom_minimum_size = Vector2(90, 0)
 layout_mode = 2
-theme = ExtResource("2_owcbc")
+theme_type_variation = &"HudLabel"
 text = "0"
 script = ExtResource("3_8ey7k")
 
-[node name="LifeContainer" type="HBoxContainer" parent="UI/VBoxContainer"]
-custom_minimum_size = Vector2(800, 90)
-layout_direction = 2
+[node name="LifeIcon" type="TextureRect" parent="UI/HUD"]
+custom_minimum_size = Vector2(80, 72)
 layout_mode = 2
-theme_override_constants/separation = 42
+size_flags_vertical = 4
+texture = ExtResource("20_life")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="Icon" type="TextureRect" parent="UI/VBoxContainer/LifeContainer"]
+[node name="LifeValue" type="Label" parent="UI/HUD"]
 layout_mode = 2
-texture = ExtResource("4_spmks")
-expand_mode = 3
-
-[node name="Value" type="Label" parent="UI/VBoxContainer/LifeContainer"]
-layout_mode = 2
-theme = ExtResource("2_owcbc")
-text = "5"
-vertical_alignment = 1
+theme_type_variation = &"HudLabel"
+text = "3"
 script = ExtResource("5_6ho6w")
 
 [node name="GameState" type="Node2D" parent="."]
@@ -138,6 +142,7 @@ JUMP_VELOCITY = -600.0
 
 [node name="Sprite2D" type="Sprite2D" parent="Player"]
 texture = ExtResource("4_spmks")
+offset = Vector2(32, -100)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 position = Vector2(2, 2)
@@ -158,7 +163,7 @@ shape = SubResource("RectangleShape2D_c87ny")
 position = Vector2(2378, 375)
 
 [node name="Sprite2D" type="Sprite2D" parent="Map/StaticFloor"]
-texture = ExtResource("9_71ekq")
+texture = ExtResource("9_measure")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Map/StaticFloor"]
 position = Vector2(3.5, -2.5)
@@ -168,7 +173,7 @@ shape = SubResource("RectangleShape2D_r4pny")
 position = Vector2(144, 1035)
 
 [node name="Sprite2D" type="Sprite2D" parent="Map/StaticFloor2"]
-texture = ExtResource("9_71ekq")
+texture = ExtResource("9_measure")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Map/StaticFloor2"]
 position = Vector2(3.5, -2.5)
@@ -179,8 +184,7 @@ position = Vector2(864, 869)
 constant_linear_velocity = Vector2(0, -300)
 
 [node name="Sprite2D" type="Sprite2D" parent="Map/BounceFloor"]
-modulate = Color(0.90646636, 0.79660636, 0.380078, 1)
-texture = ExtResource("9_71ekq")
+texture = ExtResource("9_spring")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Map/BounceFloor"]
 position = Vector2(2.5, -2)
@@ -197,8 +201,7 @@ position = Vector2(3, -2)
 shape = SubResource("RectangleShape2D_2b24p")
 
 [node name="Sprite2D" type="Sprite2D" parent="Map/FragileFloor"]
-modulate = Color(0.9859453, 0.8676859, 0.8142594, 1)
-texture = ExtResource("9_71ekq")
+texture = ExtResource("9_fragile")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Map/FragileFloor"]
 position = Vector2(3, -2)
@@ -218,8 +221,7 @@ moveToEndSeconds = 3.0
 moveToStartSeconds = 3.0
 
 [node name="Sprite2D" type="Sprite2D" parent="Map/MoveableFloor"]
-modulate = Color(0.75105435, 0.742458, 0.89835095, 1)
-texture = ExtResource("9_71ekq")
+texture = ExtResource("9_repeat")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Map/MoveableFloor"]
 position = Vector2(1.5, -1)
@@ -240,7 +242,7 @@ shape = SubResource("RectangleShape2D_r6pda")
 position = Vector2(2682, 178)
 
 [node name="Sprite2D" type="Sprite2D" parent="Map/StaticFloor3"]
-texture = ExtResource("9_71ekq")
+texture = ExtResource("9_measure")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Map/StaticFloor3"]
 position = Vector2(3.5, -2.5)
@@ -262,7 +264,7 @@ shape = SubResource("RectangleShape2D_yljlq")
 position = Vector2(3115, 48)
 
 [node name="Sprite2D" type="Sprite2D" parent="Map/StaticFloor4"]
-texture = ExtResource("9_71ekq")
+texture = ExtResource("9_measure")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Map/StaticFloor4"]
 position = Vector2(3.5, -2.5)
@@ -275,8 +277,7 @@ moveToEndSeconds = 3.0
 moveToStartSeconds = 3.0
 
 [node name="Sprite2D" type="Sprite2D" parent="Map/MoveableFloor2"]
-modulate = Color(0.75105435, 0.742458, 0.89835095, 1)
-texture = ExtResource("9_71ekq")
+texture = ExtResource("9_repeat")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Map/MoveableFloor2"]
 position = Vector2(1.5, -1)
@@ -298,8 +299,7 @@ position = Vector2(1882, -408)
 constant_linear_velocity = Vector2(0, -600)
 
 [node name="Sprite2D" type="Sprite2D" parent="Map/BounceFloor2"]
-modulate = Color(0.90646636, 0.79660636, 0.380078, 1)
-texture = ExtResource("9_71ekq")
+texture = ExtResource("9_spring")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Map/BounceFloor2"]
 position = Vector2(2.5, -2)
@@ -309,7 +309,7 @@ shape = SubResource("RectangleShape2D_5f4ac")
 position = Vector2(2146, -864)
 
 [node name="Sprite2D" type="Sprite2D" parent="Map/StaticFloor5"]
-texture = ExtResource("9_71ekq")
+texture = ExtResource("9_measure")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Map/StaticFloor5"]
 position = Vector2(3.5, -2.5)
@@ -393,20 +393,19 @@ position = Vector2(1573, -676)
 constant_linear_velocity = Vector2(0, -600)
 
 [node name="Sprite2D" type="Sprite2D" parent="Map/BounceFloor3"]
-modulate = Color(0.90646636, 0.79660636, 0.380078, 1)
-texture = ExtResource("9_71ekq")
+texture = ExtResource("9_spring")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Map/BounceFloor3"]
 position = Vector2(2.5, -2)
 shape = SubResource("RectangleShape2D_5f4ac")
 
 [node name="Hint1" type="Label" parent="Map"]
+rotation = -0.04
 offset_left = 70.0
 offset_top = 635.0
 offset_right = 711.0
 offset_bottom = 785.0
-theme = ExtResource("2_owcbc")
-theme_override_font_sizes/font_size = 36
+theme_type_variation = &"HintLabel"
 text = "HINT_CONTROLS"
 vertical_alignment = 1
 
@@ -414,7 +413,7 @@ vertical_alignment = 1
 position = Vector2(2588, -963)
 
 [node name="Sprite2D" type="Sprite2D" parent="Map/StaticFloor6"]
-texture = ExtResource("9_71ekq")
+texture = ExtResource("9_measure")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Map/StaticFloor6"]
 position = Vector2(3.5, -2.5)
@@ -424,7 +423,7 @@ shape = SubResource("RectangleShape2D_r4pny")
 position = Vector2(3027, -1070)
 
 [node name="Sprite2D" type="Sprite2D" parent="Map/StaticFloor7"]
-texture = ExtResource("9_71ekq")
+texture = ExtResource("9_measure")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Map/StaticFloor7"]
 position = Vector2(3.5, -2.5)
@@ -434,7 +433,7 @@ shape = SubResource("RectangleShape2D_r4pny")
 position = Vector2(2588, -1261)
 
 [node name="Sprite2D" type="Sprite2D" parent="Map/StaticFloor8"]
-texture = ExtResource("9_71ekq")
+texture = ExtResource("9_measure")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Map/StaticFloor8"]
 position = Vector2(3.5, -2.5)
@@ -444,7 +443,7 @@ shape = SubResource("RectangleShape2D_r4pny")
 position = Vector2(2070, -1299)
 
 [node name="Sprite2D" type="Sprite2D" parent="Map/StaticFloor9"]
-texture = ExtResource("9_71ekq")
+texture = ExtResource("9_measure")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Map/StaticFloor9"]
 position = Vector2(3.5, -2.5)
@@ -457,8 +456,7 @@ constant_linear_velocity = Vector2(-1000, 10)
 constant_angular_velocity = 1.5707964
 
 [node name="Sprite2D" type="Sprite2D" parent="Map/AccFloor"]
-modulate = Color(0.2911, 0.71, 0.43771508, 1)
-texture = ExtResource("9_71ekq")
+texture = ExtResource("9_gliss")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Map/AccFloor"]
 position = Vector2(2.5, -2)
@@ -469,8 +467,7 @@ position = Vector2(406, -1420)
 constant_linear_velocity = Vector2(0, -600)
 
 [node name="Sprite2D" type="Sprite2D" parent="Map/BounceFloor4"]
-modulate = Color(0.90646636, 0.79660636, 0.380078, 1)
-texture = ExtResource("9_71ekq")
+texture = ExtResource("9_spring")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Map/BounceFloor4"]
 position = Vector2(2.5, -2)
@@ -481,40 +478,39 @@ position = Vector2(-383, -1355)
 constant_linear_velocity = Vector2(0, -800)
 
 [node name="Sprite2D" type="Sprite2D" parent="Map/BounceFloor5"]
-modulate = Color(0.90646636, 0.79660636, 0.380078, 1)
-texture = ExtResource("9_71ekq")
+texture = ExtResource("9_spring")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Map/BounceFloor5"]
 position = Vector2(2.5, -2)
 shape = SubResource("RectangleShape2D_5f4ac")
 
 [node name="Hint2" type="Label" parent="Map"]
-offset_left = 308.0
-offset_top = 894.0
-offset_right = 949.0
-offset_bottom = 1044.0
-theme = ExtResource("2_owcbc")
-theme_override_font_sizes/font_size = 36
+rotation = -0.04
+offset_left = 340.0
+offset_top = 1030.0
+offset_right = 981.0
+offset_bottom = 1090.0
+theme_type_variation = &"HintLabel"
 text = "HINT_FRAGILE"
 vertical_alignment = 1
 
 [node name="Hint3" type="Label" parent="Map"]
-offset_left = 675.0
-offset_top = 795.0
-offset_right = 1316.0
-offset_bottom = 945.0
-theme = ExtResource("2_owcbc")
-theme_override_font_sizes/font_size = 36
+rotation = -0.04
+offset_left = 700.0
+offset_top = 930.0
+offset_right = 1341.0
+offset_bottom = 990.0
+theme_type_variation = &"HintLabel"
 text = "HINT_JUMP_HIGHER"
 vertical_alignment = 1
 
 [node name="Hint4" type="Label" parent="Map"]
+rotation = -0.04
 offset_left = 906.0
 offset_top = 426.0
 offset_right = 1547.0
 offset_bottom = 576.0
-theme = ExtResource("2_owcbc")
-theme_override_font_sizes/font_size = 36
+theme_type_variation = &"HintLabel"
 text = "HINT_COLLECT_LETTERS"
 vertical_alignment = 1
 
@@ -531,12 +527,12 @@ position = Vector2(-1, -2.5)
 shape = SubResource("RectangleShape2D_yljlq")
 
 [node name="Hint5" type="Label" parent="Map"]
+rotation = -0.04
 offset_left = 1409.0
 offset_top = -1392.0
 offset_right = 2050.0
 offset_bottom = -1242.0
-theme = ExtResource("2_owcbc")
-theme_override_font_sizes/font_size = 36
+theme_type_variation = &"HintLabel"
 text = "HINT_SLIPPERY"
 vertical_alignment = 1
 
@@ -544,7 +540,7 @@ vertical_alignment = 1
 position = Vector2(-811, -1792)
 
 [node name="Sprite2D" type="Sprite2D" parent="Map/StaticFloor10"]
-texture = ExtResource("9_71ekq")
+texture = ExtResource("9_measure")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Map/StaticFloor10"]
 position = Vector2(3.5, -2.5)
@@ -554,7 +550,7 @@ shape = SubResource("RectangleShape2D_r4pny")
 position = Vector2(-1862, -1981)
 
 [node name="Sprite2D" type="Sprite2D" parent="Map/StaticFloor12"]
-texture = ExtResource("9_71ekq")
+texture = ExtResource("9_measure")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Map/StaticFloor12"]
 position = Vector2(3.5, -2.5)
@@ -564,7 +560,7 @@ shape = SubResource("RectangleShape2D_r4pny")
 position = Vector2(-1380, -1859)
 
 [node name="Sprite2D" type="Sprite2D" parent="Map/StaticFloor11"]
-texture = ExtResource("9_71ekq")
+texture = ExtResource("9_measure")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Map/StaticFloor11"]
 position = Vector2(3.5, -2.5)
@@ -583,12 +579,12 @@ texture = ExtResource("16_spmks")
 polygon = PackedVector2Array(-52.856934, -65.71387, 50, -35.713867, -40, -5.713867, -41.428467, 64.28613, -54.285645, 64.28613)
 
 [node name="Hint6" type="Label" parent="Map"]
+rotation = -0.04
 offset_left = 1486.0
 offset_top = -1652.0
 offset_right = 2713.0
 offset_bottom = -1502.0
-theme = ExtResource("2_owcbc")
-theme_override_font_sizes/font_size = 36
+theme_type_variation = &"HintLabel"
 text = "HINT_CHECKPOINT"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -607,23 +603,22 @@ shape = SubResource("RectangleShape2D_yljlq")
 
 [node name="EndPoint" type="Area2D" parent="Map"]
 position = Vector2(-1870, -2147)
-scale = Vector2(0.08, 0.08)
 script = ExtResource("18_op4va")
 
 [node name="Sprite2D" type="Sprite2D" parent="Map/EndPoint"]
 texture = ExtResource("18_2qcc1")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Map/EndPoint"]
-position = Vector2(80, 58)
+position = Vector2(6, 5)
 shape = SubResource("RectangleShape2D_op4va")
 
 [node name="Hint7" type="Label" parent="Map"]
+rotation = -0.04
 offset_left = -2459.0
 offset_top = -2376.0
 offset_right = -1232.0
 offset_bottom = -2226.0
-theme = ExtResource("2_owcbc")
-theme_override_font_sizes/font_size = 36
+theme_type_variation = &"HintLabel"
 text = "HINT_ENDPOINT"
 horizontal_alignment = 1
 vertical_alignment = 1

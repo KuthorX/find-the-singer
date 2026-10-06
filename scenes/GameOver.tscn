@@ -1,42 +1,55 @@
-[gd_scene load_steps=4 format=3 uid="uid://dlkftw2jdbimc"]
+[gd_scene load_steps=5 format=3 uid="uid://dlkftw2jdbimc"]
 
-[ext_resource type="FontFile" uid="uid://cahop575b4dd7" path="res://fonts/EmilysCandy-Regular.ttf" id="1_vuicl"]
 [ext_resource type="Script" uid="uid://he3dsl2k1ju1" path="res://scripts/GameOverScene/RetryBtn.gd" id="2_vuicl"]
 [ext_resource type="Script" uid="uid://dt5tgdcawmobr" path="res://scripts/GameOverScene/BackToMenuBtn.gd" id="3_vuicl"]
+[ext_resource type="PackedScene" path="res://ui/Page.tscn" id="9_page"]
+[ext_resource type="Texture2D" uid="uid://2xadcfnkga1v" path="res://images/note_hurt.png" id="5_note"]
 
 [node name="GameOver" type="Node2D"]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer"]
-custom_minimum_size = Vector2(1920, 1080)
-offset_right = 1920.0
-offset_bottom = 1080.0
+[node name="Page" parent="CanvasLayer" instance=ExtResource("9_page")]
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/CenterContainer"]
-layout_mode = 2
-theme_override_constants/separation = 48
-alignment = 1
+[node name="FallenNote" type="TextureRect" parent="CanvasLayer"]
+offset_left = 1420.0
+offset_top = 790.0
+offset_right = 1672.0
+offset_bottom = 1087.0
+rotation = 0.5
+pivot_offset = Vector2(126, 148)
+texture = ExtResource("5_note")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="Label" type="Label" parent="CanvasLayer/CenterContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("1_vuicl")
-theme_override_font_sizes/font_size = 128
+[node name="Title" type="Label" parent="CanvasLayer"]
+offset_left = 150.0
+offset_top = 140.0
+offset_right = 1300.0
+offset_bottom = 380.0
+theme_type_variation = &"RedTitle"
 text = "GAME_OVER"
 
-[node name="RetryBtn" type="Button" parent="CanvasLayer/CenterContainer/VBoxContainer"]
+[node name="Menu" type="HBoxContainer" parent="CanvasLayer"]
+offset_left = 150.0
+offset_top = 830.0
+offset_right = 1300.0
+offset_bottom = 960.0
+theme_override_constants/separation = 72
+
+[node name="RetryBtn" type="Button" parent="CanvasLayer/Menu"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("1_vuicl")
-theme_override_font_sizes/font_size = 64
+size_flags_vertical = 4
+theme_type_variation = &"SmallButton"
 text = "BTN_RETRY"
 script = ExtResource("2_vuicl")
 
-[node name="BackToMenuBtn" type="Button" parent="CanvasLayer/CenterContainer/VBoxContainer"]
+[node name="BackToMenuBtn" type="Button" parent="CanvasLayer/Menu"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("1_vuicl")
-theme_override_font_sizes/font_size = 64
+size_flags_vertical = 4
+theme_type_variation = &"SmallButton"
 text = "BTN_BACK_TO_MENU"
 script = ExtResource("3_vuicl")
 
-[connection signal="pressed" from="CanvasLayer/CenterContainer/VBoxContainer/RetryBtn" to="CanvasLayer/CenterContainer/VBoxContainer/RetryBtn" method="_on_pressed"]
-[connection signal="pressed" from="CanvasLayer/CenterContainer/VBoxContainer/BackToMenuBtn" to="CanvasLayer/CenterContainer/VBoxContainer/BackToMenuBtn" method="_on_pressed"]
+[connection signal="pressed" from="CanvasLayer/Menu/RetryBtn" to="CanvasLayer/Menu/RetryBtn" method="_on_pressed"]
+[connection signal="pressed" from="CanvasLayer/Menu/BackToMenuBtn" to="CanvasLayer/Menu/BackToMenuBtn" method="_on_pressed"]

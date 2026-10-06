@@ -1,5 +1,8 @@
 extends Button
 
+func _ready() -> void:
+	grab_focus()
+
 func _on_pressed() -> void:
 	var current_level = 0
 	if has_node("/root/GameState"):

@@ -40,6 +40,7 @@ func _physics_process(delta):
 	
 	if direction:
 		velocity.x = direction * current_speed
+		$Sprite2D.scale.x = signf(direction)  # face the walking direction
 	else:
 		velocity.x = 0
 

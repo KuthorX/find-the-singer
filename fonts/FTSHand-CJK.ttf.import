@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://cahop575b4dd7"
-path="res://.godot/imported/EmilysCandy-Regular.ttf-ff1d42dee16d7fdfa6b854c654304554.fontdata"
+uid="uid://cqml6murt1pvk"
+path="res://.godot/imported/FTSHand-CJK.ttf-8eb63411f0ccc2d4af021c4ff6c152e8.fontdata"
 
 [deps]
 
-source_file="res://fonts/EmilysCandy-Regular.ttf"
-dest_files=["res://.godot/imported/EmilysCandy-Regular.ttf-ff1d42dee16d7fdfa6b854c654304554.fontdata"]
+source_file="res://fonts/FTSHand-CJK.ttf"
+dest_files=["res://.godot/imported/FTSHand-CJK.ttf-8eb63411f0ccc2d4af021c4ff6c152e8.fontdata"]
 
 [params]
 
@@ -27,7 +27,7 @@ subpixel_positioning=4
 keep_rounding_remainders=true
 oversampling=0.0
 Fallbacks=null
-fallbacks=[Resource("uid://cfqsswm6h85sc", "res://fonts/ZCOOLKuaiLe-Regular.ttf")]
+fallbacks=[]
 Compress=null
 compress=true
 preload=[]

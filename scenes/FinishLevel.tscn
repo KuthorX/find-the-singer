@@ -1,114 +1,108 @@
-[gd_scene load_steps=5 format=3 uid="uid://bsn87gove5pva"]
+[gd_scene load_steps=9 format=3 uid="uid://bsn87gove5pva"]
 
 [ext_resource type="Script" uid="uid://cbsbsxuywtguv" path="res://scripts/FinishLevelScene/FinishLevelMsg.gd" id="1_b5luu"]
-[ext_resource type="FontFile" uid="uid://cahop575b4dd7" path="res://fonts/EmilysCandy-Regular.ttf" id="1_xkcup"]
 [ext_resource type="Script" uid="uid://he3dsl2k1ju1" path="res://scripts/GameOverScene/RetryBtn.gd" id="2_b5luu"]
 [ext_resource type="Script" uid="uid://dt5tgdcawmobr" path="res://scripts/GameOverScene/BackToMenuBtn.gd" id="3_b20kx"]
+[ext_resource type="PackedScene" path="res://ui/Page.tscn" id="9_page"]
+[ext_resource type="Texture2D" uid="uid://bh51dpcqlqfqo" path="res://images/note_happy.png" id="5_note"]
+[ext_resource type="Texture2D" uid="uid://cuyhnwufhfd5f" path="res://images/clock.png" id="6_clock"]
+[ext_resource type="Texture2D" uid="uid://c4nq0y7qb2kk0" path="res://images/letter.png" id="7_letter"]
+[ext_resource type="Texture2D" uid="uid://cvx3n5xvmto0d" path="res://images/icon_life.png" id="8_life"]
 
 [node name="FinishLevel" type="Node2D"]
 script = ExtResource("1_b5luu")
 
-[node name="CenterContainer" type="CenterContainer" parent="."]
-custom_minimum_size = Vector2(1920, 1080)
-offset_right = 1920.0
-offset_bottom = 1080.0
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
-layout_mode = 2
-theme_override_constants/separation = 48
-alignment = 1
+[node name="Page" parent="CanvasLayer" instance=ExtResource("9_page")]
 
-[node name="Hint" type="Label" parent="CenterContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("1_xkcup")
-theme_override_font_sizes/font_size = 128
+[node name="Note" type="TextureRect" parent="CanvasLayer"]
+offset_left = 1300.0
+offset_top = 128.0
+offset_right = 1748.0
+offset_bottom = 656.0
+texture = ExtResource("5_note")
+expand_mode = 1
+
+[node name="Title" type="Label" parent="CanvasLayer"]
+offset_left = 150.0
+offset_top = 160.0
+offset_right = 1150.0
+offset_bottom = 400.0
+theme_type_variation = &"TitleLabel"
 text = "LEVEL_COMPLETE"
-horizontal_alignment = 1
 
-[node name="Level" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_constants/separation = 64
-alignment = 1
+[node name="Stats" type="HBoxContainer" parent="CanvasLayer"]
+offset_left = 150.0
+offset_top = 400.0
+offset_right = 1150.0
+offset_bottom = 500.0
+theme_override_constants/separation = 20
 
-[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/Level"]
+[node name="TimeIcon" type="TextureRect" parent="CanvasLayer/Stats"]
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
-theme_override_fonts/font = ExtResource("1_xkcup")
-theme_override_font_sizes/font_size = 96
-text = "LABEL_LEVEL"
+size_flags_vertical = 4
+texture = ExtResource("6_clock")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="Value" type="Label" parent="CenterContainer/VBoxContainer/Level"]
+[node name="TimeValue" type="Label" parent="CanvasLayer/Stats"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
-theme_override_fonts/font = ExtResource("1_xkcup")
-theme_override_font_sizes/font_size = 96
-text = "1"
+theme_type_variation = &"StatValue"
+text = "00:00:00.000"
 
-[node name="Time" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+[node name="LettersIcon" type="TextureRect" parent="CanvasLayer/Stats"]
+custom_minimum_size = Vector2(110, 80)
 layout_mode = 2
-theme_override_constants/separation = 64
-alignment = 1
+size_flags_vertical = 4
+texture = ExtResource("7_letter")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/Time"]
+[node name="LettersValue" type="Label" parent="CanvasLayer/Stats"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(90, 0)
 layout_mode = 2
-theme_override_fonts/font = ExtResource("1_xkcup")
-theme_override_font_sizes/font_size = 96
-text = "LABEL_TIME"
+theme_type_variation = &"StatValue"
+text = "0"
 
-[node name="Value" type="Label" parent="CenterContainer/VBoxContainer/Time"]
+[node name="HealthIcon" type="TextureRect" parent="CanvasLayer/Stats"]
+custom_minimum_size = Vector2(90, 80)
 layout_mode = 2
-theme_override_fonts/font = ExtResource("1_xkcup")
-theme_override_font_sizes/font_size = 96
-text = "00:11:00.000"
+size_flags_vertical = 4
+texture = ExtResource("8_life")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+[node name="HealthValue" type="Label" parent="CanvasLayer/Stats"]
+unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 160
-alignment = 1
+theme_type_variation = &"StatValue"
+text = "0"
 
-[node name="Letter" type="HBoxContainer" parent="CenterContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-theme_override_constants/separation = 64
+[node name="Menu" type="HBoxContainer" parent="CanvasLayer"]
+offset_left = 150.0
+offset_top = 830.0
+offset_right = 1300.0
+offset_bottom = 960.0
+theme_override_constants/separation = 72
 
-[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer/Letter"]
+[node name="RetryBtn" type="Button" parent="CanvasLayer/Menu"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("1_xkcup")
-theme_override_font_sizes/font_size = 96
-text = "LABEL_LETTERS"
-
-[node name="Value" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer/Letter"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("1_xkcup")
-theme_override_font_sizes/font_size = 96
-text = "1"
-
-[node name="Health" type="HBoxContainer" parent="CenterContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-theme_override_constants/separation = 64
-
-[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer/Health"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("1_xkcup")
-theme_override_font_sizes/font_size = 96
-text = "LABEL_HEALTH"
-
-[node name="Value" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer/Health"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("1_xkcup")
-theme_override_font_sizes/font_size = 96
-text = "1"
-
-[node name="RetryBtn" type="Button" parent="CenterContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("1_xkcup")
-theme_override_font_sizes/font_size = 64
+size_flags_vertical = 4
+theme_type_variation = &"SmallButton"
 text = "BTN_RETRY"
 script = ExtResource("2_b5luu")
 
-[node name="BackToMenuBtn" type="Button" parent="CenterContainer/VBoxContainer"]
+[node name="BackToMenuBtn" type="Button" parent="CanvasLayer/Menu"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("1_xkcup")
-theme_override_font_sizes/font_size = 64
+size_flags_vertical = 4
+theme_type_variation = &"SmallButton"
 text = "BTN_BACK_TO_MENU"
 script = ExtResource("3_b20kx")
 
-[connection signal="pressed" from="CenterContainer/VBoxContainer/RetryBtn" to="CenterContainer/VBoxContainer/RetryBtn" method="_on_pressed"]
-[connection signal="pressed" from="CenterContainer/VBoxContainer/BackToMenuBtn" to="CenterContainer/VBoxContainer/BackToMenuBtn" method="_on_pressed"]
+[connection signal="pressed" from="CanvasLayer/Menu/RetryBtn" to="CanvasLayer/Menu/RetryBtn" method="_on_pressed"]
+[connection signal="pressed" from="CanvasLayer/Menu/BackToMenuBtn" to="CanvasLayer/Menu/BackToMenuBtn" method="_on_pressed"]

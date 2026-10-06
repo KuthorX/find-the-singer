@@ -6,10 +6,6 @@ GAME_OVER,游戏结束……,Game Over...
 BTN_RETRY,再试一次,Retry
 BTN_BACK_TO_MENU,返回主菜单,Back to Menu
 LEVEL_COMPLETE,关卡完成！,Level Complete!
-LABEL_LEVEL,关卡,Level
-LABEL_TIME,用时,Time
-LABEL_LETTERS,信件,Letters
-LABEL_HEALTH,生命,Health
 HINT_CONTROLS,"移动：左 / 右方向键
 奔跑：Shift
 跳跃：空格","Move: Left / Right Arrow

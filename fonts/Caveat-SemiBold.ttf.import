@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://cfqsswm6h85sc"
-path="res://.godot/imported/ZCOOLKuaiLe-Regular.ttf-873e31fe8b31803ed553173947e80596.fontdata"
+uid="uid://bd5neixreh5u4"
+path="res://.godot/imported/Caveat-SemiBold.ttf-ee15e561c8391781b9005453ed0ba47a.fontdata"
 
 [deps]
 
-source_file="res://fonts/ZCOOLKuaiLe-Regular.ttf"
-dest_files=["res://.godot/imported/ZCOOLKuaiLe-Regular.ttf-873e31fe8b31803ed553173947e80596.fontdata"]
+source_file="res://fonts/Caveat-SemiBold.ttf"
+dest_files=["res://.godot/imported/Caveat-SemiBold.ttf-ee15e561c8391781b9005453ed0ba47a.fontdata"]
 
 [params]
 
@@ -22,7 +22,7 @@ msdf_size=48
 allow_system_fallback=true
 force_autohinter=false
 modulate_color_glyphs=false
-hinting=3
+hinting=1
 subpixel_positioning=4
 keep_rounding_remainders=true
 oversampling=0.0
