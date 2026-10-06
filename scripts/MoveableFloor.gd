@@ -13,8 +13,10 @@ func _ready():
 	# Set initial position to start
 	global_position = start_pos
 	
-	# Create Tween with physics processing to sync with physics step (prevents jitter)
-	var tween: Tween = get_tree().create_tween()
+	# Bind the Tween to this node so it is killed together with the level
+	# (a SceneTree-owned infinite tween outlives the node and errors on unload).
+	# Physics processing keeps it in sync with the physics step (prevents jitter).
+	var tween: Tween = create_tween()
 	tween.set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)  # Key fix for synchronization
 	tween.tween_property(self, "global_position", end_pos, moveToEndSeconds).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
 	tween.tween_property(self, "global_position", start_pos, moveToStartSeconds).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)

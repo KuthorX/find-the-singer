@@ -44,18 +44,12 @@ func _physics_process(delta):
 		velocity.x = 0
 
 	move_and_slide()
-	
-	for i in range(get_slide_collision_count()):
-		var collision = get_slide_collision(i)
-		if "Groud" in collision.get_collider().name:
-			print("碰撞已发生")
 
 func move_to_checkpoint():
 	velocity = Vector2.ZERO
 	position = checkpoint_pos
 
 func save_checkpoint(checkpoint_position: Vector2):
-	print("save checkpoint")
 	checkpoint_pos = checkpoint_position
 
 func reset_to_init_checkpoint():

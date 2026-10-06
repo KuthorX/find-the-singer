@@ -11,7 +11,6 @@ func _ready():
 
 func _on_body_entered(body):
 	if body.is_in_group("player"):  # Changed to group for consistency
-		print("Emitting mode_changed: ", camera_mode, " ", step_threshold_x, " ", step_threshold_y)
 		emit_signal("mode_changed", camera_mode, step_threshold_x, step_threshold_y)
 
 func _on_body_exited(body):
