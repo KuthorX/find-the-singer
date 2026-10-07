@@ -35,11 +35,10 @@ def seam(x: np.ndarray) -> str:
 
 def main(spec_dir: str) -> None:
     os.makedirs(spec_dir, exist_ok=True)
-    files = sorted(glob.glob(f"{ROOT}/audio/music/*.mp3") + glob.glob(f"{ROOT}/audio/sfx/*.*"))
+    files = sorted(glob.glob(f"{ROOT}/audio/music/*.mp3") + glob.glob(f"{ROOT}/audio/sfx/*.wav")
+                   + glob.glob(f"{ROOT}/audio/sfx/*.mp3"))
     total = 0
     for path in files:
-        if path.endswith(".import"):
-            continue
         total += os.path.getsize(path)
         name = os.path.splitext(os.path.basename(path))[0]
         x = decode(path, f"{spec_dir}/_tmp.wav")

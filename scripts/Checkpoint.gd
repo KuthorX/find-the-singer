@@ -30,4 +30,5 @@ func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		if body.has_method("save_checkpoint"):
 			body.save_checkpoint(global_position)
+			AudioManager.play_sfx("checkpoint")
 			queue_free()

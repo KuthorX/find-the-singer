@@ -29,7 +29,7 @@ func collect_letter_bonus():
 func take_damage(amount):
 	current_health -= amount
 	if current_health <= 0:
-		get_tree().change_scene_to_file("res://scenes/GameOver.tscn")
+		get_tree().change_scene_to_file.call_deferred("res://scenes/GameOver.tscn")
 	emit_signal("health_changed", current_health, max_health)
 	
 func heal(amount):

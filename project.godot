@@ -24,6 +24,7 @@ GameState="*res://scripts/GameState.gd"
 CameraModes="*res://scripts/CameraModes.gd"
 Localization="*res://scripts/Localization.gd"
 ShotHook="*res://scripts/ShotHook.gd"
+AudioManager="*res://scripts/AudioManager.gd"
 
 [display]
 

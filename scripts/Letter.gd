@@ -4,6 +4,9 @@ extends Area2D
 
 var angle: float = 0.0  # 当前旋转角度
 
+func _ready() -> void:
+	add_to_group("letters")  # AudioManager counts these to pace the melody
+
 func _process(delta: float) -> void:
 	angle += rotation_speed * delta  # 更新角度，实现连续变化
 	$Sprite2D.scale.x = cos(angle)  # 用 cos 模拟 y 轴旋转（scale.x 从 1 到 -1 到 1）

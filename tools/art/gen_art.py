@@ -434,6 +434,30 @@ def ui_underline():
     save(img, "ui_underline.png", w, h, rough=False)
 
 
+def ui_slider_fill():
+    """Tianyi-blue swoosh: the filled part of a volume slider (the song's level)."""
+    w, h = 256, 28
+    img = canvas(w, h)
+    d = ImageDraw.Draw(img)
+    pts = [(2, 16), (60, 14), (130, 15), (200, 13), (252, 12)]
+    pen(d, pts, 6, ACCENT_DK, seed=131, wobble=1.0, pressure=0.3)
+    save(img, "ui_slider_fill.png", w, h, rough=False)
+
+
+def ui_grabber():
+    """Slider handle: a small solid note head (ink, and blue when focused)."""
+    for name, color in (("ui_grabber.png", INK), ("ui_grabber_hi.png", ACCENT_DK)):
+        w, h = 34, 28
+        img = canvas(w, h)
+        layer = Image.new("RGBA", img.size, (0, 0, 0, 0))
+        d = ImageDraw.Draw(layer)
+        body = ellipse_pts(w / 2, h / 2, 13, 8.5, -0.36)
+        poly_fill(d, body, color)
+        pen(d, body, 1.6, color, seed=141, wobble=0.4)
+        img.alpha_composite(layer)
+        save(img, name, w, h)
+
+
 if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)
     paper_tile()
@@ -453,3 +477,5 @@ if __name__ == "__main__":
     clef_ink()
     hole()
     ui_underline()
+    ui_slider_fill()
+    ui_grabber()
