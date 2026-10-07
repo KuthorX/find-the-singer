@@ -3,17 +3,19 @@
 Concept: "the unfinished song". The singer is missing, so her melody is
 missing too. The gameplay track is split into stems:
 
-  play_base  - piano, bass, brushes-like kit, pizzicato, pad, music box
+  play_base  - keys, bass, light kit, off-beat stabs, pad, music box
   play_mel1  - melody skeleton (first note of every bar + long notes)
   play_mel2  - remaining on-beat melody notes
   play_mel3  - off-beat melody notes (the syncopation that makes it a song)
-  play_mel4  - harmony a third below + glockenspiel sparkle in the chorus
+  play_mel4  - harmony a third below + bell sparkle in the chorus
 
 Letters collected in the level fade the melody stems in one by one, so the
 song literally fills in as the fans' letters are found.
 
-Every loop is written 3 times in a row; render.py keeps the middle copy so
-reverb tails wrap around the loop seam.
+The notes here are the singer's song and are kept as written; the sounds are
+chosen in orchestra.py. LOOP_REPEATS copies of each loop are written; render.py
+sets it to 1 and lets the renderer fold the release/reverb tail back onto the
+loop start, so tails wrap around the loop seam.
 """
 
 import os

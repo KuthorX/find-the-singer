@@ -1,9 +1,11 @@
-"""Synthesized sound effects for Find The Singer.
+"""Sound effects for Find The Singer.
 
-Palette: one gel pen on manuscript paper (taps, scribbles, tears) and the
-song's own instruments (music box / celesta bells, plucks), always in D major
-so every effect sits inside the music. Deterministic: re-running gives the
-same files. Usage: python3 sfx.py [out_dir]
+Palette: one gel pen on manuscript paper (taps, scribbles, tears; numpy
+synthesis) layered with the song's own instruments rendered offline from
+Serum 2 / Vital / MS Basic (music box, glass, harp, pizzicato, xylophone; see
+sfx_bank.py), always in D major so every effect sits inside the music.
+Deterministic for a given tone bank. Run render.py first (it renders the bank),
+then with the audiokit venv: python sfx.py [out_dir] [bank_stems_dir]
 """
 
 import os
@@ -12,6 +14,7 @@ import numpy as np
 from scipy import signal
 
 from dsp import SR, db, lufs, true_peak_db, write_wav
+from sfx_bank import ToneBank
 
 RNG = np.random.default_rng(1647)
 PEAK_CEILING_DB = -1.5
@@ -76,34 +79,36 @@ def noise(dur: float) -> np.ndarray:
 
 # --- instruments ----------------------------------------------------------
 
-def bell(f: float, dur: float = 0.6, tau: float = 0.22, bright: float = 1.6) -> np.ndarray:
-    """Music-box / celesta tine: FM with an inharmonic modulator, index decays."""
-    t = t_axis(dur)
-    index = bright * np.exp(-t / 0.05)
-    tone = np.sin(2 * np.pi * f * t + index * np.sin(2 * np.pi * f * 3.5 * t))
-    tone += 0.25 * np.sin(2 * np.pi * f * 2 * t) * np.exp(-t / 0.08)
-    return tone * decay(dur, tau, 0.001)
+TONES = None  # sfx_bank.ToneBank, loaded in main()
 
 
-def pluck(f: float, dur: float = 0.4, damp: float = 0.996, bright: float = 0.5) -> np.ndarray:
-    """Karplus-Strong string: pizzicato / harp."""
-    n = int(dur * SR)
-    period = max(2, int(round(SR / f)))
-    buf = lowpass(RNG.uniform(-1, 1, period), 1000 + 8000 * bright)
-    out = np.empty(n)
-    for i in range(n):
-        v = buf[i % period]
-        out[i] = v
-        buf[i % period] = damp * 0.5 * (v + buf[(i + 1) % period])
-    return out * decay(dur, dur / 3, 0.001)
+def shaped(x: np.ndarray, dur: float, tau: float) -> np.ndarray:
+    """Fit a rendered tone to dur seconds with an exponential decay of time constant tau."""
+    x = np.pad(x, (0, max(0, int(dur * SR) - len(x))))[:int(dur * SR)]
+    return x * decay(dur, tau, 0.001)
 
 
-def marimba(f: float, dur: float = 0.35) -> np.ndarray:
-    t = t_axis(dur)
-    x = np.sin(2 * np.pi * f * t) * np.exp(-t / 0.12)
-    x += 0.35 * np.sin(2 * np.pi * f * 4 * t) * np.exp(-t / 0.03)
-    x += 0.12 * np.sin(2 * np.pi * f * 9.9 * t) * np.exp(-t / 0.012)
-    return x * decay(dur, 1.0, 0.001)
+def bell(note: str, dur: float = 0.6, tau: float = 0.22, bright: float = 1.0) -> np.ndarray:
+    """Music-box tine (Serum 2 Kinderjoy, rendered at pitch). bright scales the decay."""
+    return shaped(TONES.tone("musicbox", note, dur), dur, tau * (1.2 + 0.3 * bright))
+
+
+def glass(note: str, dur: float = 0.25, tau: float = 0.05) -> np.ndarray:
+    """Tiny glassy tick (Vital Ceramic)."""
+    return shaped(TONES.tone("glass", note, dur), dur, tau * 1.5)
+
+
+def pluck(note: str, dur: float = 0.4, damp: float = 0.996, bright: float = 0.5) -> np.ndarray:
+    """Harp (MS Basic GM 46); the low D3 landing uses pizzicato strings (GM 45)."""
+    bank = "pizz" if note == "D3" else "harp"
+    x = TONES.tone(bank, note, dur)
+    x = lowpass(x, 1500 + 9000 * bright)
+    return shaped(x / max(np.abs(x).max(), 1e-9), dur, dur / 3 * (1 + 50 * (damp - 0.99)))
+
+
+def marimba(note: str, dur: float = 0.35) -> np.ndarray:
+    """Wooden mallet (Serum 2 Xylo Pluck)."""
+    return shaped(TONES.tone("xylo", note, dur), dur, 0.15)
 
 
 def pen_tap(dur: float = 0.09, body_hz: float = 150.0) -> np.ndarray:
@@ -151,22 +156,22 @@ def sfx_jump():
 def sfx_land_measure():
     # plain measure: a whole note landing - pen thump + low D pizzicato
     x = place(silence(0.32), pen_tap(0.1, 140), 0)
-    return place(x, pluck(hz("D3"), 0.3, 0.995, 0.3), 0.0, 0.45)
+    return place(x, pluck("D3", 0.3, 0.995, 0.3), 0.0, 0.45)
 
 
 def sfx_land_fragile():
     # dashed measure: a brittle glassy tick with a tritone shadow and paper crinkle
     x = place(silence(0.3), pen_tap(0.06, 260), 0, 0.6)
-    x = place(x, bell(hz("D7"), 0.25, 0.05, 0.8), 0, 0.35)
-    x = place(x, bell(hz("G#6"), 0.25, 0.04, 0.8), 0.012, 0.2)
+    x = place(x, glass("D7", 0.25, 0.05), 0, 0.35)
+    x = place(x, glass("G#6", 0.25, 0.04), 0.012, 0.2)
     return place(x, paper(0.18, 2000, 7000, 0.8), 0.01, 0.35)
 
 
 def sfx_land_repeat():
     # repeat signs: "again!" - two marimba notes, A then D
     x = place(silence(0.4), pen_tap(0.07, 180), 0, 0.5)
-    x = place(x, marimba(hz("A4"), 0.3), 0, 0.7)
-    return place(x, marimba(hz("D5"), 0.3), 0.075, 0.7)
+    x = place(x, marimba("A4", 0.3), 0, 0.7)
+    return place(x, marimba("D5", 0.3), 0.075, 0.7)
 
 
 def sfx_bounce():
@@ -184,7 +189,7 @@ def sfx_land_gliss():
     # glissando measure: a quick harp run up the D pentatonic
     x = place(silence(0.5), pen_tap(0.06, 170), 0, 0.4)
     for i, n in enumerate(("D5", "E5", "F#5", "A5", "B5", "D6")):
-        x = place(x, pluck(hz(n), 0.3, 0.997, 0.7), 0.022 * i, 0.32)
+        x = place(x, pluck(n, 0.3, 0.997, 0.7), 0.022 * i, 0.32)
     return x
 
 
@@ -213,28 +218,28 @@ def sfx_fragile_break():
 def sfx_fragile_restore():
     # redrawn: a pencil scribble that settles on a soft celesta D
     x = place(silence(0.6), scribble(0.3), 0, 0.6)
-    return place(x, bell(hz("D6"), 0.35, 0.12, 0.6), 0.22, 0.35)
+    return place(x, bell("D6", 0.35, 0.12, 0.6), 0.22, 0.35)
 
 
 def sfx_letter():
     # an envelope from a fan: paper flick + music-box D6 (pitched per letter in-game)
     x = place(silence(0.7), paper(0.06, 2500, 8000, 0.4), 0, 0.35)
-    x = place(x, bell(hz("D6"), 0.65, 0.2, 1.4), 0.02, 0.9)
-    return place(x, bell(hz("D7"), 0.3, 0.06, 0.5), 0.02, 0.15)
+    x = place(x, bell("D6", 0.65, 0.2, 1.4), 0.02, 0.9)
+    return place(x, glass("D7", 0.3, 0.06), 0.02, 0.15)
 
 
 def sfx_checkpoint():
     # the blue pennant: the song is remembered here - D6 + A6 + D7 bells
     x = silence(1.1)
     for i, (n, g) in enumerate((("D6", 0.7), ("A6", 0.55), ("D7", 0.4))):
-        x = place(x, bell(hz(n), 1.0, 0.35, 1.2), 0.07 * i, g)
-    return place(x, pluck(hz("D4"), 0.6, 0.997, 0.4), 0, 0.3)
+        x = place(x, bell(n, 1.0, 0.35, 1.2), 0.07 * i, g)
+    return place(x, pluck("D4", 0.6, 0.997, 0.4), 0, 0.3)
 
 
 def sfx_hurt():
     # fell off the staff: a sour minor second sagging down, dry crumple
-    x = place(silence(0.5), pluck(hz("Eb5"), 0.3, 0.993, 0.5), 0, 0.6)
-    x = place(x, pluck(hz("D5"), 0.4, 0.99, 0.4), 0.11, 0.55)
+    x = place(silence(0.5), pluck("Eb5", 0.3, 0.993, 0.5), 0, 0.6)
+    x = place(x, pluck("D5", 0.4, 0.99, 0.4), 0.11, 0.55)
     x = place(x, chirp(hz("A4"), hz("D4"), 0.3, 0.1), 0.0, 0.35)
     return place(x, paper(0.2, 900, 4000, 0.7), 0, 0.3)
 
@@ -243,7 +248,7 @@ def sfx_respawn():
     # redrawn at the checkpoint: quick scribble then a music-box arpeggio
     x = place(silence(0.7), scribble(0.14, 20), 0, 0.45)
     for i, n in enumerate(("D5", "F#5", "A5", "D6")):
-        x = place(x, bell(hz(n), 0.4, 0.12, 1.0), 0.1 + 0.045 * i, 0.55)
+        x = place(x, bell(n, 0.4, 0.12, 1.0), 0.1 + 0.045 * i, 0.55)
     return x
 
 
@@ -251,59 +256,59 @@ def sfx_life_up():
     # ten letters read: a new heart - sparkle arpeggio to the top D
     x = silence(1.0)
     for i, n in enumerate(("D6", "F#6", "A6", "D7", "F#7")):
-        x = place(x, bell(hz(n), 0.6, 0.18, 1.2), 0.06 * i, 0.5)
+        x = place(x, bell(n, 0.6, 0.18, 1.2), 0.06 * i, 0.5)
     return x
 
 
 def sfx_ui_hover():
     x = place(silence(0.08), band(noise(0.02), 3000, 8000) * decay(0.02, 0.004), 0, 0.5)
-    return place(x, bell(hz("A6"), 0.06, 0.015, 0.3), 0.002, 0.3)
+    return place(x, glass("A6", 0.06, 0.015), 0.002, 0.3)
 
 
 def sfx_ui_click():
     x = place(silence(0.2), pen_tap(0.05, 220), 0, 0.6)
-    return place(x, pluck(hz("A5"), 0.18, 0.99, 0.6), 0, 0.5)
+    return place(x, pluck("A5", 0.18, 0.99, 0.6), 0, 0.5)
 
 
 def sfx_ui_confirm():
     x = place(silence(0.45), pen_tap(0.05, 220), 0, 0.5)
-    x = place(x, bell(hz("D6"), 0.3, 0.1, 1.0), 0, 0.6)
-    return place(x, bell(hz("A6"), 0.35, 0.12, 1.0), 0.08, 0.6)
+    x = place(x, bell("D6", 0.3, 0.1, 1.0), 0, 0.6)
+    return place(x, bell("A6", 0.35, 0.12, 1.0), 0.08, 0.6)
 
 
 def sfx_ui_back():
     x = place(silence(0.4), pen_tap(0.05, 180), 0, 0.5)
-    x = place(x, bell(hz("A5"), 0.25, 0.08, 0.8), 0, 0.55)
-    return place(x, bell(hz("D5"), 0.3, 0.1, 0.8), 0.08, 0.55)
+    x = place(x, bell("A5", 0.25, 0.08, 0.8), 0, 0.55)
+    return place(x, bell("D5", 0.3, 0.1, 0.8), 0.08, 0.55)
 
 
 def sfx_ui_toggle():
     x = place(silence(0.15), pen_tap(0.04, 300), 0, 0.5)
-    return place(x, bell(hz("E6"), 0.12, 0.03, 0.6), 0, 0.4)
+    return place(x, bell("E6", 0.12, 0.03, 0.6), 0, 0.4)
 
 
 # name -> (generator, loudness target in LUFS); feedback hierarchy:
 # rewards > movement > UI, hover the quietest
 SFX = {
-    "jump": (sfx_jump, -22),
-    "land_measure": (sfx_land_measure, -22),
-    "land_fragile": (sfx_land_fragile, -21),
-    "land_repeat": (sfx_land_repeat, -21),
-    "land_gliss": (sfx_land_gliss, -21),
-    "bounce": (sfx_bounce, -19),
-    "fragile_crack": (sfx_fragile_crack, -20),
-    "fragile_break": (sfx_fragile_break, -19),
-    "fragile_restore": (sfx_fragile_restore, -25),
-    "letter": (sfx_letter, -18),
-    "checkpoint": (sfx_checkpoint, -17),
-    "hurt": (sfx_hurt, -18),
-    "respawn": (sfx_respawn, -19),
-    "life_up": (sfx_life_up, -17),
-    "ui_hover": (sfx_ui_hover, -30),
-    "ui_click": (sfx_ui_click, -23),
-    "ui_confirm": (sfx_ui_confirm, -21),
-    "ui_back": (sfx_ui_back, -22),
-    "ui_toggle": (sfx_ui_toggle, -24),
+    "jump": (sfx_jump, -21),
+    "land_measure": (sfx_land_measure, -21),
+    "land_fragile": (sfx_land_fragile, -20),
+    "land_repeat": (sfx_land_repeat, -20),
+    "land_gliss": (sfx_land_gliss, -20),
+    "bounce": (sfx_bounce, -18),
+    "fragile_crack": (sfx_fragile_crack, -19),
+    "fragile_break": (sfx_fragile_break, -18),
+    "fragile_restore": (sfx_fragile_restore, -24),
+    "letter": (sfx_letter, -17),
+    "checkpoint": (sfx_checkpoint, -16),
+    "hurt": (sfx_hurt, -17),
+    "respawn": (sfx_respawn, -18),
+    "life_up": (sfx_life_up, -16),
+    "ui_hover": (sfx_ui_hover, -29),
+    "ui_click": (sfx_ui_click, -22),
+    "ui_confirm": (sfx_ui_confirm, -20),
+    "ui_back": (sfx_ui_back, -21),
+    "ui_toggle": (sfx_ui_toggle, -23),
 }
 
 
@@ -311,6 +316,8 @@ def finish(x: np.ndarray, target: float) -> np.ndarray:
     x = x - np.mean(x)
     fade = int(0.01 * SR)
     x[-fade:] *= np.linspace(1, 0, fade)
+    rise = int(0.0015 * SR)  # no click on the very first sample
+    x[:rise] *= np.linspace(0, 1, rise)
     x = x * db(target - lufs(x))
     peak = true_peak_db(x)
     if peak > PEAK_CEILING_DB:
@@ -318,7 +325,9 @@ def finish(x: np.ndarray, target: float) -> np.ndarray:
     return x
 
 
-def main(out_dir: str) -> None:
+def main(out_dir: str, bank_dir: str) -> None:
+    global TONES
+    TONES = ToneBank(bank_dir, SR)
     os.makedirs(out_dir, exist_ok=True)
     for name, (gen, target) in SFX.items():
         x = finish(gen(), target)
@@ -330,4 +339,5 @@ if __name__ == "__main__":
     import sys
 
     root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    main(sys.argv[1] if len(sys.argv) > 1 else f"{root}/audio/sfx")
+    out = sys.argv[1] if len(sys.argv) > 1 else f"{root}/audio/sfx"
+    main(out, sys.argv[2] if len(sys.argv) > 2 else "/tmp/fts_rescore/build/stems/bank")
