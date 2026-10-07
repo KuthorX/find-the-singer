@@ -325,13 +325,34 @@ def finish(x: np.ndarray, target: float) -> np.ndarray:
     return x
 
 
+# Cues longer than this ship as Ogg Vorbis (libsndfile level 0.6); shorter ones stay WAV,
+# where Vorbis headers would cost more than Godot's QOA import saves.
+OGG_MIN_SECONDS = 0.5
+OGG_LEVEL = 0.6
+
+
+def write_cue(out_dir: str, name: str, x: np.ndarray) -> None:
+    ext = "ogg" if len(x) / SR > OGG_MIN_SECONDS else "wav"
+    stale = os.path.join(out_dir, f"{name}.{'wav' if ext == 'ogg' else 'ogg'}")
+    if os.path.exists(stale):
+        os.remove(stale)
+    path = os.path.join(out_dir, f"{name}.{ext}")
+    if ext == "wav":
+        write_wav(path, x)
+        return
+    import soundfile as sf
+
+    pcm = np.clip(np.round(x * 32767.0), -32768, 32767) / 32767.0  # same quantisation as the WAVs
+    sf.write(path, pcm, SR, format="OGG", subtype="VORBIS", compression_level=OGG_LEVEL)
+
+
 def main(out_dir: str, bank_dir: str) -> None:
     global TONES
     TONES = ToneBank(bank_dir, SR)
     os.makedirs(out_dir, exist_ok=True)
     for name, (gen, target) in SFX.items():
         x = finish(gen(), target)
-        write_wav(os.path.join(out_dir, name + ".wav"), x)
+        write_cue(out_dir, name, x)
         print(f"{name:16s} {len(x)/SR:5.2f}s {lufs(x):6.1f} LUFS {true_peak_db(x):6.1f} dBTP")
 
 

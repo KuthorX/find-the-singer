@@ -35,8 +35,8 @@ def seam(x: np.ndarray) -> str:
 
 def main(spec_dir: str) -> None:
     os.makedirs(spec_dir, exist_ok=True)
-    files = sorted(glob.glob(f"{ROOT}/audio/music/*.mp3") + glob.glob(f"{ROOT}/audio/sfx/*.wav")
-                   + glob.glob(f"{ROOT}/audio/sfx/*.mp3"))
+    files = sorted(glob.glob(f"{ROOT}/audio/music/*.ogg") + glob.glob(f"{ROOT}/audio/sfx/*.wav")
+                   + glob.glob(f"{ROOT}/audio/sfx/*.ogg"))
     total = 0
     for path in files:
         total += os.path.getsize(path)

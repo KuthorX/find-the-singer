@@ -6,7 +6,7 @@ Stages (all offline; nothing is ever played):
   2. One audiokit process renders every spec under the shared render lock and
      writes a stem per instrument.
   3. Mastering here: per-instrument trims, loop folding, gameplay stems grouped
-     with one shared gain (the full mix lands on -18 LUFS), jingles, mp3 export.
+     with one shared gain (the full mix lands on -18 LUFS), jingles, Ogg Vorbis export.
 
 Run with the audiokit venv:
   arch -arm64 /tmp/audiokit/venv/bin/python tools/audio/render.py [build_dir] [--master-only]
@@ -33,7 +33,7 @@ LOCK = ["lockf", "-t", "3600", "/tmp/audiokit/render.lock"]
 HERE = os.path.dirname(os.path.abspath(__file__))
 MUSIC_LUFS = -18.0
 JINGLE_LUFS = -17.0
-PEAK_CEILING_DB = -1.5  # dBTP, leaves room for mp3 overshoot
+PEAK_CEILING_DB = -1.5  # dBTP, leaves room for codec overshoot
 PLAY_LOOP = len(score.PLAY_CHORDS) * 4 * 60 / score.PLAY_BPM
 MENU_LOOP = len(score.MENU_CHORDS) * 4 * 60 / score.MENU_BPM
 STEMS = ["play_base", "play_mel1", "play_mel2", "play_mel3", "play_mel4"]
@@ -109,8 +109,19 @@ def write(path: str, x: np.ndarray) -> None:
     sf.write(path, x.T.astype(np.float32), SR, subtype="PCM_16")
 
 
-def mp3(wav: str, out: str, kbps: int) -> None:
-    subprocess.run(["lame", "--quiet", "--noreplaygain", "-q", "2", "-b", str(kbps), wav, out], check=True)
+# libsndfile Vorbis compression level (0 = best, 1 = smallest): 0.7 is about 110 kbps stereo.
+OGG_LEVEL = 0.7
+
+
+def ogg(wav: str, out: str, level: float = OGG_LEVEL) -> None:
+    """Ogg Vorbis from the 16-bit master; decoded length equals the master to the sample."""
+    x, sr = sf.read(wav, always_2d=True)
+    with sf.SoundFile(out, "w", sr, x.shape[1], format="OGG", subtype="VORBIS",
+                      compression_level=level) as fh:
+        for i in range(0, len(x), 65536):  # chunked: one huge write segfaults libsndfile 1.2.2
+            fh.write(x[i:i + 65536])
+    if sf.info(out).frames != len(x):
+        raise RuntimeError(f"{out}: Vorbis length {sf.info(out).frames} != {len(x)}")
 
 
 def master_play(build: str, music_dir: str, report: dict) -> None:
@@ -126,7 +137,7 @@ def master_play(build: str, music_dir: str, report: dict) -> None:
         y = groups[stem] * gain
         wav = f"{build}/{stem}.wav"
         write(wav, y)
-        mp3(wav, f"{music_dir}/{stem}.mp3", 128 if stem == "play_base" else 96)
+        ogg(wav, f"{music_dir}/{stem}.ogg")
         report[stem] = summary(y, loop=True)
     write(f"{build}/play_full.wav", full * gain)
     report["play_full(mix)"] = summary(full * gain, loop=True)
@@ -140,7 +151,7 @@ def master_menu(build: str, music_dir: str, report: dict) -> None:
     mix = mix - mix.mean(axis=1, keepdims=True)
     y = mix * fit(mix, MUSIC_LUFS)
     write(f"{build}/menu.wav", y)
-    mp3(f"{build}/menu.wav", f"{music_dir}/menu.mp3", 128)
+    ogg(f"{build}/menu.wav", f"{music_dir}/menu.ogg")
     report["menu"] = summary(y, loop=True)
 
 
@@ -175,7 +186,7 @@ def master_jingles(build: str, sfx_dir: str, report: dict) -> None:
             y = trim_tail(run_down(y))
         y = y * fit(y, JINGLE_LUFS)
         write(f"{build}/{name}.wav", y)
-        mp3(f"{build}/{name}.wav", f"{sfx_dir}/{name}.mp3", 128)
+        ogg(f"{build}/{name}.wav", f"{sfx_dir}/{name}.ogg")
         report[name] = summary(y, loop=False)
 
 

@@ -29,16 +29,16 @@ The notes, and so the singer's melody and the title hook, are written in `tools/
 
 | File | Role | Tempo / key / form | Length | Loudness |
 |---|---|---|---|---|
-| `audio/music/menu.mp3` | Title, and the screen after each jingle | 90 BPM, D major, canon progression D–A/C#–Bm–F#m/A–G–D/F#–G–A ×4. The keys play alone first; then the music box plays the hook; then the singer's voice hums it an octave lower; then the music box plays it again but forgets the last two bars | 85.33 s (32 bars), seamless loop | -18.0 LUFS, peak -3.9 dBTP |
-| `audio/music/play_base.mp3` | Gameplay band (always on) | 120 BPM, D major, 48 bars: intro 4, verse 12, pre-chorus 8, royal-road chorus IV–V–iii–vi 16, tag 8 | 96.00 s, seamless loop | -23.4 LUFS alone |
-| `audio/music/play_mel1.mp3` | Melody skeleton (always on): the first note of each bar and every long note | same | 96.00 s | stereo, -20.1 LUFS alone |
-| `audio/music/play_mel2.mp3` | Remaining on-beat melody notes (from 30 % of the letters) | same | 96.00 s | stereo |
-| `audio/music/play_mel3.mp3` | Off-beat / syncopated melody notes (from 60 %) | same | 96.00 s | stereo |
-| `audio/music/play_mel4.mp3` | Chorus harmony and bell (from 90 %) | same | 96.00 s | stereo |
-| `audio/sfx/jingle_complete.mp3` | Finish screen | Hook over G→A resolving to D, with a bell roll | 6.16 s | -17.0 LUFS |
-| `audio/sfx/jingle_gameover.mp3` | Game Over screen | Music box tries the hook in D minor and runs down (pitch and tempo sag like a spring unwinding) | 4.94 s | -17.0 LUFS |
+| `audio/music/menu.ogg` | Title, and the screen after each jingle | 90 BPM, D major, canon progression D–A/C#–Bm–F#m/A–G–D/F#–G–A ×4. The keys play alone first; then the music box plays the hook; then the singer's voice hums it an octave lower; then the music box plays it again but forgets the last two bars | 85.33 s (32 bars), seamless loop | -18.0 LUFS, peak -3.9 dBTP |
+| `audio/music/play_base.ogg` | Gameplay band (always on) | 120 BPM, D major, 48 bars: intro 4, verse 12, pre-chorus 8, royal-road chorus IV–V–iii–vi 16, tag 8 | 96.00 s, seamless loop | -23.4 LUFS alone |
+| `audio/music/play_mel1.ogg` | Melody skeleton (always on): the first note of each bar and every long note | same | 96.00 s | stereo, -20.1 LUFS alone |
+| `audio/music/play_mel2.ogg` | Remaining on-beat melody notes (from 30 % of the letters) | same | 96.00 s | stereo |
+| `audio/music/play_mel3.ogg` | Off-beat / syncopated melody notes (from 60 %) | same | 96.00 s | stereo |
+| `audio/music/play_mel4.ogg` | Chorus harmony and bell (from 90 %) | same | 96.00 s | stereo |
+| `audio/sfx/jingle_complete.ogg` | Finish screen | Hook over G→A resolving to D, with a bell roll | 6.16 s | -17.0 LUFS |
+| `audio/sfx/jingle_gameover.ogg` | Game Over screen | Music box tries the hook in D minor and runs down (pitch and tempo sag like a spring unwinding) | 4.94 s | -17.0 LUFS |
 
-All five gameplay stems start on the same frame and loop together. With every stem on, the full mix measures -18.0 LUFS (peak -4.1 dBTP); the base plus the melody skeleton is -20.4 LUFS. The vocal lead is wide, so the melody stems are stereo mp3 (a mono fold-down lost about 3 dB). The level has 9 letters, so the stems unlock at 3, 6 and 9 letters. Each one fades in over 1.5 s.
+All five gameplay stems start on the same frame and loop together. With every stem on, the full mix measures -18.0 LUFS (peak -4.1 dBTP); the base plus the melody skeleton is -20.4 LUFS. The vocal lead is wide, so the melody stems are stereo Ogg Vorbis (a mono fold-down lost about 3 dB). The level has 9 letters, so the stems unlock at 3, 6 and 9 letters. Each one fades in over 1.5 s.
 
 ## Sound effects
 
@@ -54,12 +54,12 @@ Each platform's notation has its own landing voice. The landing volume scales wi
 | Land on a sagging spring measure | `bounce.wav` | Marcato thump plus a rising "boing" D4→D5 with a little wobble |
 | Fragile measure starts to split | `fragile_crack.wav` | Paper crackle plus a small bending creak |
 | Fragile measure disappears | `fragile_break.wav` | Paper tear rising from low to high, then a thud (quieter with distance from the camera) |
-| Fragile measure redrawn | `fragile_restore.wav` | Pencil scribble settling on a soft music-box D (quiet, distance-attenuated) |
-| Letter pickup | `letter.wav` | Envelope flick plus a music-box bell. Successive letters climb the D pentatonic (D5 … D7), so the letters themselves sing a scale |
-| Checkpoint | `checkpoint.wav` | D6 + A6 + D7 bells with a low D pluck ("the song is remembered here") |
+| Fragile measure redrawn | `fragile_restore.ogg` | Pencil scribble settling on a soft music-box D (quiet, distance-attenuated) |
+| Letter pickup | `letter.ogg` | Envelope flick plus a music-box bell. Successive letters climb the D pentatonic (D5 … D7), so the letters themselves sing a scale |
+| Checkpoint | `checkpoint.ogg` | D6 + A6 + D7 bells with a low D pluck ("the song is remembered here") |
 | Fall / hurt | `hurt.wav` | A sour Eb→D minor second sagging down, with a dry crumple. Never harsh |
-| Respawn | `respawn.wav` | A quick scribble, then a music-box arpeggio D–F#–A–D |
-| Extra life (every 10 letters) | `life_up.wav` | Sparkle arpeggio up to F#7 |
+| Respawn | `respawn.ogg` | A quick scribble, then a music-box arpeggio D–F#–A–D |
+| Extra life (every 10 letters) | `life_up.ogg` | Sparkle arpeggio up to F#7 |
 | UI hover / focus | `ui_hover.wav` | Tiny pencil tick plus A6 blip (the quietest sound) |
 | UI click | `ui_click.wav` | Pen click plus an A5 pluck |
 | Start / Retry | `ui_confirm.wav` | D6→A6 bells |
@@ -80,10 +80,10 @@ All SFX are 44.1 kHz 16-bit mono WAV, 0.08–1.1 s long. They are normalized to 
 
 ```sh
 PY="arch -arm64 /tmp/audiokit/venv/bin/python"
-$PY tools/audio/render.py [build_dir]          # score -> MIDI -> Vital/Serum 2/MS Basic -> mastered mp3, plus the SFX tone bank
+$PY tools/audio/render.py [build_dir]          # score -> MIDI -> Vital/Serum 2/MS Basic -> mastered Ogg Vorbis, plus the SFX tone bank
 $PY tools/audio/render.py [build_dir] --master-only   # re-mix from the rendered stems (balance trims live in render.py)
 $PY tools/audio/sfx.py audio/sfx [build_dir]/stems/bank   # SFX: numpy foley + tone bank -> audio/sfx/*.wav
 python3 tools/audio/analyze.py                 # duration / LUFS / true peak / loop-seam report + spectrograms
 ```
 
-Requirements: the offline audiokit toolchain in `/tmp/audiokit` (pedalboard hosting Vital and Serum 2 headless, FluidSynth with `MS Basic.sf3`, numpy/scipy/soundfile), `lame` and `lockf`. `render.py` renders every spec in one process under the shared `/tmp/audiokit/render.lock`. Nothing is played and no plugin window is opened. Loops are rendered once with a tail that is folded back onto the loop start, so reverb and releases wrap across the seam. The loop flags are set in the `.import` files. Sources and licenses are listed in `audio/LICENSES.md`.
+Requirements: the offline audiokit toolchain in `/tmp/audiokit` (pedalboard hosting Vital and Serum 2 headless, FluidSynth with `MS Basic.sf3`, numpy/scipy/soundfile with libsndfile Vorbis), `ffmpeg` (analysis only) and `lockf`. `render.py` renders every spec in one process under the shared `/tmp/audiokit/render.lock`. Nothing is played and no plugin window is opened. Loops are rendered once with a tail that is folded back onto the loop start, so reverb and releases wrap across the seam. The loop flags are set in the `.import` files. Sources and licenses are listed in `audio/LICENSES.md`.

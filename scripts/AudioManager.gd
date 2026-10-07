@@ -38,17 +38,17 @@ const UI_PRESS_SOUNDS := {
 	"LanguageBtn": "ui_toggle", "MuteBtn": "ui_toggle",
 }
 
-const MUSIC_MENU: AudioStream = preload("res://audio/music/menu.mp3")
+const MUSIC_MENU: AudioStream = preload("res://audio/music/menu.ogg")
 const MUSIC_STEMS: Array[AudioStream] = [
-	preload("res://audio/music/play_base.mp3"),
-	preload("res://audio/music/play_mel1.mp3"),
-	preload("res://audio/music/play_mel2.mp3"),
-	preload("res://audio/music/play_mel3.mp3"),
-	preload("res://audio/music/play_mel4.mp3"),
+	preload("res://audio/music/play_base.ogg"),
+	preload("res://audio/music/play_mel1.ogg"),
+	preload("res://audio/music/play_mel2.ogg"),
+	preload("res://audio/music/play_mel3.ogg"),
+	preload("res://audio/music/play_mel4.ogg"),
 ]
 const JINGLES := {
-	"complete": preload("res://audio/sfx/jingle_complete.mp3"),
-	"gameover": preload("res://audio/sfx/jingle_gameover.mp3"),
+	"complete": preload("res://audio/sfx/jingle_complete.ogg"),
+	"gameover": preload("res://audio/sfx/jingle_gameover.ogg"),
 }
 const SFX := {
 	"jump": preload("res://audio/sfx/jump.wav"),
@@ -59,12 +59,12 @@ const SFX := {
 	"bounce": preload("res://audio/sfx/bounce.wav"),
 	"fragile_crack": preload("res://audio/sfx/fragile_crack.wav"),
 	"fragile_break": preload("res://audio/sfx/fragile_break.wav"),
-	"fragile_restore": preload("res://audio/sfx/fragile_restore.wav"),
-	"letter": preload("res://audio/sfx/letter.wav"),
-	"checkpoint": preload("res://audio/sfx/checkpoint.wav"),
+	"fragile_restore": preload("res://audio/sfx/fragile_restore.ogg"),
+	"letter": preload("res://audio/sfx/letter.ogg"),
+	"checkpoint": preload("res://audio/sfx/checkpoint.ogg"),
 	"hurt": preload("res://audio/sfx/hurt.wav"),
-	"respawn": preload("res://audio/sfx/respawn.wav"),
-	"life_up": preload("res://audio/sfx/life_up.wav"),
+	"respawn": preload("res://audio/sfx/respawn.ogg"),
+	"life_up": preload("res://audio/sfx/life_up.ogg"),
 	"ui_hover": preload("res://audio/sfx/ui_hover.wav"),
 	"ui_click": preload("res://audio/sfx/ui_click.wav"),
 	"ui_confirm": preload("res://audio/sfx/ui_confirm.wav"),
@@ -109,6 +109,14 @@ func _ready() -> void:
 	_last_max_health = GameState.max_health
 	if OS.has_feature("web"):
 		_preload_web_samples()
+
+
+# Stops playbacks on quit so the audio server releases the Ogg streams before shutdown
+# (a still-playing AudioStreamPlaybackOggVorbis is otherwise reported as leaked).
+func _exit_tree() -> void:
+	for player: AudioStreamPlayer in [_menu_player, _jingle_player] + _stem_players + _sfx_players:
+		player.stop()
+		player.stream = null
 
 
 func _process(_delta: float) -> void:
